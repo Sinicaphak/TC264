@@ -24,14 +24,14 @@ enum ShowValueType {
 // ShowKeyValue中可能出现的值
 union ShowValue {
     double d;
-    int32 vi32;
+    int vi32;
     uint32 vu32;
 };
 // key为字符串, type为值的类型, value为值
 struct ShowKeyValue {
     const char *key;
     enum ShowValueType type;
-    union ShowValue *value;
+    union ShowValue value;
 };
 
 void show_skvs(struct ShowKeyValue *skvs, int skvs_length);

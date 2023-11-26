@@ -15,9 +15,12 @@
 // ------------------ 舵机占空比计算方式 ------------------
 
 // 舵机左值 ??? 右值 ?? 中值 ?
-#define SERVER_DUTY_MAX (920)
-#define SERVER_DUTY_MIDDLE (820)
-#define SERVER_DUTY_MIN (710)
+#define SERVER_DUTY_MAX (970)
+#define SERVER_DUTY_MIDDLE (900)
+#define SERVER_DUTY_MIN (830)
 
+extern double server_motor_input;
+
+void server_motor_move(double input);
 //endif
 #endif

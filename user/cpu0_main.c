@@ -41,10 +41,8 @@
 // 本例程是开源库空工程 可用作移植或者测试各类内外设
 
 // **************************** 代码区域 ****************************
+#define skvs_lenght 2
 
-struct ShowKeyValue skvs[1] = {
-    {"version", TYPE_UINT, 0}
-};
 
 int core0_main(void)
 {
@@ -53,15 +51,37 @@ int core0_main(void)
     // 此处编写用户代码 例如外设初始化代码等
     
     init_all();
+    // 要打印的数值
+    // struct ShowKeyValue skvs[skvs_lenght];
+    // struct ShowKeyValue skv1, skv2;
+
+    // skv1.key = "smpid.out";
+    // skv1.type = TYPE_DOUBLE;
+    // skv1.value.d = sm_pid.output;
+
+    // skv2.key = "smpid.in";
+    // skv2.type = TYPE_DOUBLE;
+    // skv2.value.d = sm_pid.err_now;
+
+    // skvs[0] = skv1;
+    // skvs[1] = skv2;
 
     // 此处编写用户代码 例如外设初始化代码等
     cpu_wait_event_ready();         // 等待所有核心初始化完毕
     while (TRUE)
     {
         // 此处编写需要循环执行的代码
-        show_skvs(skvs, 1);
-
-        // 此处编写需要循环执行的代码
+        if(mt9v03x_finish_flag) {
+            tft180_displayimage03x((const uint8 *)mt9v03x_image, 160, 128);
+            image_boundary_process();
+            switch_trackline();
+            show_line();
+            
+            mt9v03x_finish_flag = 0;
+        }
+        process_data();
+        // show_skvs(skvs, skvs_lenght);
+        //循环执行的代码
     }
 }
 

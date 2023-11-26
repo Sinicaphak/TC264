@@ -1,8 +1,8 @@
 #include "zf_common_headfile.h"
 
 
-int16 encoder_data_l = 0;
-int16 encoder_data_r = 0;
+int16 encoder_data_l = 1;
+int16 encoder_data_r = 2;
 /* int16 encoder_data_3 = 0;
 int16 encoder_data_4 = 0; */
 

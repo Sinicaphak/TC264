@@ -1,4 +1,6 @@
 #include "zf_common_headfile.h"
+double motor_input_l = 0;
+double motor_input_r = 0;
 
 void motor_move(double input_l, double input_r){
 	

@@ -2,13 +2,13 @@
 #ifndef _INITIALIZE_H_
 #define _INITIALIZE_H_
 // 电机是全桥的为true, 半桥为false
-#define IS_FULL_BRIDGE (false)
+#define IS_FULL_BRIDGE (true)
 
 // 全桥电机方向与pwm引脚
-#define FULL_BRIDGE_LEFT_DIR (P21_2)
-#define FULL_BRIDGE_LEFT_PWM (ATOM0_CH1_P21_3)
-#define FULL_BRIDGE_RIGHT_DIR (P21_4)
-#define FULL_BRIDGE_RIGHT_PWM (ATOM0_CH3_P21_5)
+#define FULL_BRIDGE_LEFT_DIR (P21_4)
+#define FULL_BRIDGE_LEFT_PWM (ATOM0_CH3_P21_5)
+#define FULL_BRIDGE_RIGHT_DIR (P21_2)
+#define FULL_BRIDGE_RIGHT_PWM (ATOM0_CH1_P21_3)
 // 正转反转
 #define FULL_MOTOR_FORWARD (GPIO_LOW)
 #define FULL_MOTOR_BACKWARD (GPIO_HIGH)
