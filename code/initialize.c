@@ -18,21 +18,21 @@ void init_motor(void){
 
 void init_all(void){
     gpio_init(P20_8, GPO, GPIO_HIGH, GPO_PUSH_PULL);         // 初始化 LED4 输出 默认高电平 推挽输出模式
-    pit_ms_init(CCU60_CH1, 20);
     // tft屏幕初始化
     tft180_set_dir(TFT180_CROSSWISE);
     tft180_set_color(RGB565_BLACK, RGB565_WHITE);
     tft180_init();
-     mt9v03x_init();
+    mt9v03x_init();
     // 电机初始化
-    init_motor();
-    // 舵机初始化
-    pwm_init(SERVO_MOTOR_PWM, SERVO_MOTOR_FREQ, SERVER_DUTY_MIDDLE);
-    // 编码器初始化
+   init_motor();
+     // 舵机初始化
+     pwm_init(SERVO_MOTOR_PWM, SERVO_MOTOR_FREQ, SERVER_DUTY_MIDDLE);
+    // // 编码器初始化
     encoder_dir_init(ENCODER_LEFT, ENCODER_LEFT_A, ENCODER_LEFT_B);                      // 初始化编码器模块与引脚 方向解码编码器模式
     encoder_dir_init(ENCODER_RIGHT, ENCODER_RIGHT_A, ENCODER_RIGHT_B);                      // 初始化编码器模块与引脚 方向解码编码器模式
 /*     encoder_dir_init(ENCODER_3, ENCODER_3_A, ENCODER_3_B);                      // 初始化编码器模块与引脚 方向解码编码器模式
     encoder_dir_init(ENCODER_4, ENCODER_4_A, ENCODER_4_B);                      // 初始化编码器模块与引脚 方向解码编码器模式 */
+    pit_ms_init(CCU60_CH1, 20);
 
     sm_pid.err_now = 1;
     sm_pid.output = 2;
