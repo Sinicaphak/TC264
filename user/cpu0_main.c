@@ -41,7 +41,8 @@
 // 本例程是开源库空工程 可用作移植或者测试各类内外设
 
 // **************************** 代码区域 ****************************
-#define skvs_lenght 2
+#define skvs_lenght 4
+#define skvs_a_lenght 2
 
 
 int core0_main(void)
@@ -52,19 +53,35 @@ int core0_main(void)
     
     init_all();
     // 要打印的数值
-    // struct ShowKeyValue skvs[skvs_lenght];
-    // struct ShowKeyValue skv1, skv2;
+    struct ShowKeyValue skvs[skvs_lenght], skvs_a[skvs_a_lenght];
+    struct ShowKeyValue skv1, skv2, skv3, skv4;
+    struct ShowKeyValue skva1, skva2;
 
-    // skv1.key = "smpid.out";
-    // skv1.type = TYPE_DOUBLE;
-    // skv1.value.d = sm_pid.output;
+    skv1.key = "version";
+    skv1.type = TYPE_DOUBLE;
+    skv1.value.d = 64;
 
-    // skv2.key = "smpid.in";
-    // skv2.type = TYPE_DOUBLE;
-    // skv2.value.d = sm_pid.err_now;
+    skv2.key = "smpid.in";
+    skv2.type = TYPE_DOUBLE;
+    skv2.value.d = 114;
 
-    // skvs[0] = skv1;
-    // skvs[1] = skv2;
+    skv3.key = "smpid.out";
+    skv3.type = TYPE_DOUBLE;
+    skv3.value.d = 514;
+
+    skv4.key = "servo_out";
+    skv4.type = TYPE_DOUBLE;
+    skv4.value.d = 1919;
+    
+    skva1.key = "l";
+    skva1.type = TYPE_INT;
+    skva1.value.d = 1919;
+    
+    skva2.key = "r";
+    skva2.type = TYPE_INT;
+    skva2.value.d = 810;
+
+    skvs[0] = skv1;
 
     // 此处编写用户代码 例如外设初始化代码等
     cpu_wait_event_ready();         // 等待所有核心初始化完毕
@@ -76,12 +93,31 @@ int core0_main(void)
             image_boundary_process();
             switch_trackline();
             show_line();
-            
+            process_data();
+
+            skv2.key = "smpid.in";
+            skv2.type = TYPE_DOUBLE;
+            skv2.value.d = sm_pid.err_now;
+
+            skv3.key = "smpid.out";
+            skv3.type = TYPE_DOUBLE;
+            skv3.value.d = sm_pid.output;
+
+            skv4.key = "servo_out";
+            skv4.type = TYPE_DOUBLE;
+            skv4.value.d = server_motor_input;
+            skvs[1] = skv2;
+            skvs[2] = skv3;
+            skvs[3] = skv4;
+
             mt9v03x_finish_flag = 0;
         }
-        process_data();
-        // show_skvs(skvs, skvs_lenght);
+        show_skvs(skvs, skvs_lenght);
         //循环执行的代码
+        // skva1.value.vi32 = encoder_data_l;
+        // skva2.value.vi32 = encoder_data_r;
+        // printf("%d, %d, %f\n", encoder_data_l, encoder_data_r, target_speed);
+        // show_skvs(skvs_a, skvs_a_lenght);
     }
 }
 

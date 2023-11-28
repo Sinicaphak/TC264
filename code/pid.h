@@ -2,13 +2,6 @@
 #ifndef _PID_H_
 #define _PID_H_
 
-#define ENCODER_SHIFT 3
-// i_out限幅
-#define I_OUT_MAX (1500)
-#define ADC_I_OUT_MAX (1000)
-// 总限幅
-#define OUT_MAX MOTOR_MAX
-#define ADC_OUT_MAX (OUT_MAX/3)
 // 位置式pid
 struct PositionalPid {
     double err_now;

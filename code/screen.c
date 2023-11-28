@@ -5,9 +5,6 @@ int tft180_x_max = 160;
 void show_line(void){
 
     for(uint16 i = 0; i < MT9V03X_H; i = i + 2){
-        // if (i > tft180_y_max || (uint16)trackline[i] > tft180_x_max){
-        //     continue;
-        // }
         ips200_draw_point((uint16)trackline[i], i, RGB565_BLACK);//ºÚÉ«¸ú×Ù
     }
     for(uint16 i = 0; i < MT9V03X_H; i ++) {
