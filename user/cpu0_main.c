@@ -41,25 +41,17 @@
 // 本例程是开源库空工程 可用作移植或者测试各类内外设
 
 // **************************** 代码区域 ****************************
-#define skvs_lenght 4
-#define skvs_a_lenght 2
+#define SKVS_LENGHT 4
+#define SKVS_T_LENGHT 2
 
-
-int core0_main(void)
-{
-    clock_init();                   // 获取时钟频率<务必保留>
-    debug_init();                   // 初始化默认调试串口
-    // 此处编写用户代码 例如外设初始化代码等
-    
-    init_all();
-    // 要打印的数值
-    struct ShowKeyValue skvs[skvs_lenght], skvs_a[skvs_a_lenght];
+void common_run(void){
+   // 要打印的数值
+    struct ShowKeyValue skvs[SKVS_LENGHT];
     struct ShowKeyValue skv1, skv2, skv3, skv4;
-    struct ShowKeyValue skva1, skva2;
 
     skv1.key = "version";
-    skv1.type = TYPE_DOUBLE;
-    skv1.value.d = 64;
+    skv1.type = TYPE_UINT;
+    skv1.value.vu32 = 65;
 
     skv2.key = "smpid.in";
     skv2.type = TYPE_DOUBLE;
@@ -72,24 +64,16 @@ int core0_main(void)
     skv4.key = "servo_out";
     skv4.type = TYPE_DOUBLE;
     skv4.value.d = 1919;
-    
-    skva1.key = "l";
-    skva1.type = TYPE_INT;
-    skva1.value.d = 1919;
-    
-    skva2.key = "r";
-    skva2.type = TYPE_INT;
-    skva2.value.d = 810;
 
     skvs[0] = skv1;
 
-    // 此处编写用户代码 例如外设初始化代码等
-    cpu_wait_event_ready();         // 等待所有核心初始化完毕
+
     while (TRUE)
     {
         // 此处编写需要循环执行的代码
         if(mt9v03x_finish_flag) {
-            tft180_displayimage03x((const uint8 *)mt9v03x_image, 160, 128);
+            print_binaryzation_image_hl((double **)mt9v03x_image, MT9V03X_W, MT9V03X_H, 125, RGB565_BLACK, RGB565_WHITE);
+            // tft180_displayimage03x((const uint8 *)mt9v03x_image, 160, 128);
             image_boundary_process();
             switch_trackline();
             show_line();
@@ -112,13 +96,41 @@ int core0_main(void)
 
             mt9v03x_finish_flag = 0;
         }
-        show_skvs(skvs, skvs_lenght);
-        //循环执行的代码
-        // skva1.value.vi32 = encoder_data_l;
-        // skva2.value.vi32 = encoder_data_r;
-        // printf("%d, %d, %f\n", encoder_data_l, encoder_data_r, target_speed);
-        // show_skvs(skvs_a, skvs_a_lenght);
+        show_skvs(skvs, SKVS_LENGHT);
     }
+}
+
+void test_run(void){
+    struct ShowKeyValue skvs_t[SKVS_T_LENGHT];
+    struct ShowKeyValue skvt1, skvt2;
+    double result[MT9V03X_H][MT9V03X_W];
+
+    while (TRUE)
+    {
+        // 此处编写需要循环执行的代码
+        if(mt9v03x_finish_flag) {
+            tft180_displayimage03x((const uint8 *)mt9v03x_image, 160, 128);
+            convolution((uint8 *)mt9v03x_image, MT9V03X_W, MT9V03X_H, &cc, result);
+            print_binaryzation_image(result, MT9V03X_W, MT9V03X_H, 150, RGB565_GREEN);
+
+            mt9v03x_finish_flag = 0;
+        }
+        // show_skvs(skvs_t, SKVS_LENGHT);
+    }
+}
+
+int core0_main(void)
+{
+    clock_init();                   // 获取时钟频率<务必保留>
+    debug_init();                   // 初始化默认调试串口
+    // 此处编写用户代码 例如外设初始化代码等
+    
+    init_all();
+
+    // 此处编写用户代码 例如外设初始化代码等
+    cpu_wait_event_ready();         // 等待所有核心初始化完毕
+    // common_run();
+    test_run();
 }
 
 #pragma section all restore

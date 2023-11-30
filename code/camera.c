@@ -54,8 +54,6 @@ void difsum_left(uint8 y,uint8 x){
 }
 //差比和寻找右侧边界点
 void difsum_right(uint8 y,uint8 x){
-    int16 temp = 0;
-
     float sum,dif,sar;//和，差，比
     uint8 col;//列
     uint8 mov = 2;//每次作差后的移动量,默认为2，可以根据画面分辨率调整
@@ -66,13 +64,7 @@ void difsum_right(uint8 y,uint8 x){
         sum = (float)((mt9v03x_image[y][col] + mt9v03x_image[y][col + mov + 1]));
         sar = fabs(dif / sum);//求取差比和
         if(sar > SAR_THRE){//差比和大于阈值代表深浅色突变
-            /* 修改 */
-            temp = (int16)(col + mov);
-            if(temp < 0) {
-                temp = 0;
-            }
-            /* 修改结束 */
-            rightline[y] = temp;
+            rightline[y] = (int16)(col + mov);
             rightline_num ++;//右线点计数+
             break;//找到边界后退出
         }
