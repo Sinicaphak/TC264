@@ -10,13 +10,6 @@
 #include "zf_common_headfile.h"
 extern struct Element element;
 
-struct Element {
-    // 元素类型
-    enum Element_TYPE type;
-    // 元素方向, false为左，true为右
-    bool dir;
-};
-
 enum Element_TYPE {
     // 直线
     STRAIGHT = 1,
@@ -27,6 +20,14 @@ enum Element_TYPE {
     // 十字路口
     CROSS = 4
 };
+
+struct Element {
+    // 元素类型
+    enum Element_TYPE type;
+    // 元素方向, false为左，true为右
+    bool dir;
+};
+
 /**
  * 识别元素. 
  * 主函数中应该这样调用:

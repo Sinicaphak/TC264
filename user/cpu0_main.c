@@ -72,7 +72,7 @@ void common_run(void){
     {
         // 此处编写需要循环执行的代码
         if(mt9v03x_finish_flag) {
-            print_binaryzation_image_hl((double **)mt9v03x_image, MT9V03X_W, MT9V03X_H, 125, RGB565_BLACK, RGB565_WHITE);
+            print_binaryzation_image_hl((const double **)mt9v03x_image, MT9V03X_W, MT9V03X_H, 125, RGB565_BLACK, RGB565_WHITE);
             // tft180_displayimage03x((const uint8 *)mt9v03x_image, 160, 128);
             image_boundary_process();
             switch_trackline();
@@ -118,7 +118,7 @@ void test_run(void){
         // 此处编写需要循环执行的代码
         if(mt9v03x_finish_flag) {
             tft180_displayimage03x((const uint8 *)mt9v03x_image, 160, 128);
-            convolution((uint8 *)mt9v03x_image, MT9V03X_W, MT9V03X_H, &cc, result);
+            convolution(mt9v03x_image, MT9V03X_W, MT9V03X_H, &cc, result);
             print_binaryzation_image(result, MT9V03X_W, MT9V03X_H, 150, RGB565_GREEN);
             // if (element.dir){
             //     skvt2.value.vi32 = element.type;
@@ -145,6 +145,8 @@ int core0_main(void)
     cpu_wait_event_ready();         // 等待所有核心初始化完毕
     // common_run();
     test_run();
+
+    return 0;
 }
 
 #pragma section all restore

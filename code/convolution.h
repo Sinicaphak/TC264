@@ -13,11 +13,16 @@ struct ConvolutionCore {
     double** core;
 };
 
-void binaryzation(uint8* image, uint16 x, uint16 y);
-void convolution(const uint8* image, uint16 image_x, uint16 image_y, struct ConvolutionCore* core, double** result);
-void print_convoluted_image(double** image, uint16 image_x, uint16 image_y, double threshold, rgb565_color_enum high_color);
+extern struct ConvolutionCore cc;
+// 二值化结果放在result里
+void binaryzation(const uint8** image, uint16 x, uint16 y, uint8** result);
+void convolution(const uint8** image, uint16 image_x, uint16 image_y, struct ConvolutionCore* core, double** result);
+void print_binaryzation_image(
+    const double** image, uint16 image_x, uint16 image_y,
+    double threshold, rgb565_color_enum high_color
+);
 void print_binaryzation_image_hl(
-    double** image, uint16 image_x, uint16 image_y,
+    const double** image, uint16 image_x, uint16 image_y,
     double threshold, rgb565_color_enum high_color, rgb565_color_enum low_color
 );
 

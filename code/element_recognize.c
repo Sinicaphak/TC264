@@ -48,7 +48,7 @@ struct Element recognize_element (
     right_slope_diff = find_max_slope_diff(rightline, rightline_begin, rightline_end);
     two_diff = left_slope_diff - right_slope_diff;
     // 两个斜率差的差值的绝对值小于阈值, 则为直线或弯道, 不用特殊处理
-    if (! is_special_element(two_diff, TWO_DIFF_THRESHOLD)) {
+    if (! is_in_absolute_limit(two_diff, TWO_DIFF_THRESHOLD)) {
         // 判断元素位置在左还是右
         if (two_diff > 0) {
             default_element.dir = false;

@@ -13,20 +13,20 @@ struct ConvolutionCore cc = {
 uint8 black_white_image[MT9V03X_H][MT9V03X_W]; 
 
 
-double convolution_point(uint8* image, uint16 now_x, uint16 now_y, struct ConvolutionCore* core) {
+double convolution_point(const uint8** image, uint16 now_x, uint16 now_y, struct ConvolutionCore* core) {
     int i, j;
     double sum = 0;
     for (i = 0; i < core->side_length; i++) {
         for (j = 0; j < core->side_length; j++) {
-            sum += image[now_x - core->half_side_length + i ][now_y - core->half_side_length + j] * core->core[i][j];
+            sum += (image[now_x - core->half_side_length + i ][now_y - core->half_side_length + j]) * (core->core[i][j]);
         }
     }
     return sum;
 }
 
-void convolution(const uint8* image, uint16 image_x, uint16 image_y, struct ConvolutionCore* core, double** result) {
-    int i, j;
-    double end_result[image_y][image_x] = {256};
+void convolution(const uint8** image, uint16 image_x, uint16 image_y, struct ConvolutionCore* core, double** result) {
+    uint16 i, j;
+    double end_result[image_y][image_x];
     for (i = 0; i < image_x; i++) {
         for (j = 0; j < image_y; j++) {
             if ( 
@@ -35,9 +35,9 @@ void convolution(const uint8* image, uint16 image_x, uint16 image_y, struct Conv
                 (i > image_x - core->half_side_length - 1) ||
                 (j > image_y - core->half_side_length - 1)
             ) {
-                continue;
+                end_result[j][i] = 0x0000;
             } else {
-                image[j][i] = convolution_point(image, j, i, core);
+                end_result[j][i] = convolution_point(image, j, i, core);
             }
         }
     }
@@ -45,23 +45,23 @@ void convolution(const uint8* image, uint16 image_x, uint16 image_y, struct Conv
 }
 
 // ¶þÖµ»¯
-void binaryzation(uint8* image, uint16 x, uint16 y) {
-    uint16 i, j;
-    uint8 temp;
+void binaryzation(const uint8** image, uint16 x, uint16 y, uint8** result) {
+    int i, j;
+    uint8 end_result[y][x];
     for (i = 0; i < y; i++) {
         for (j = 0; j < x; j++) {
-            temp = image[i][j];
-            if (temp > THRESHOLD) {
-                image[i][j] = 0;
+            if (image[i][j] > THRESHOLD) {
+                end_result[i][j] = 0x0000;
             } else {
-                image[i][j] = 0;
+                end_result[i][j] = 0xFFFF;
             }
         }
     }
+    result = end_result;
 }
 
 void print_binaryzation_image_hl(
-    double** image, uint16 image_x, uint16 image_y,
+    const double** image, uint16 image_x, uint16 image_y,
     double threshold, rgb565_color_enum high_color, rgb565_color_enum low_color
 ) {
     uint16 i, j;
@@ -77,7 +77,7 @@ void print_binaryzation_image_hl(
 }
 
 void print_binaryzation_image(
-    double** image, uint16 image_x, uint16 image_y,
+    const double** image, uint16 image_x, uint16 image_y,
     double threshold, rgb565_color_enum high_color
 ) {
     uint16 i, j;
