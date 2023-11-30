@@ -105,6 +105,14 @@ void test_run(void){
     struct ShowKeyValue skvt1, skvt2;
     double result[MT9V03X_H][MT9V03X_W];
 
+    skvt1.key = "version";
+    skvt1.type = TYPE_UINT;
+    skvt1.value.vu32 = 965;
+
+    skvt2.key = "element";
+    skvt2.type = TYPE_ELEMENT;
+    skvt2.value.vi32 = 0;
+
     while (TRUE)
     {
         // 此处编写需要循环执行的代码
@@ -112,9 +120,15 @@ void test_run(void){
             tft180_displayimage03x((const uint8 *)mt9v03x_image, 160, 128);
             convolution((uint8 *)mt9v03x_image, MT9V03X_W, MT9V03X_H, &cc, result);
             print_binaryzation_image(result, MT9V03X_W, MT9V03X_H, 150, RGB565_GREEN);
-
+            // if (element.dir){
+            //     skvt2.value.vi32 = element.type;
+            // } else {
+            //     skvt2.value.vi32 = -1 * element.type;
+            // };
             mt9v03x_finish_flag = 0;
         }
+        // skvs_t[0] = skvt1;
+        // skvs_t[1] = skvt2;
         // show_skvs(skvs_t, SKVS_LENGHT);
     }
 }

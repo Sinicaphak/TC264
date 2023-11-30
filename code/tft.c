@@ -14,8 +14,45 @@ void show_value(struct ShowKeyValue *skv, uint16 x, uint16 y){
             tft180_show_uint(x, y, skv->value.vu32, NUM_LENGTH);
             break;
         };
+        case (TYPE_ELEMENT) : {
+            if (skv->value.vi32 < 0){
+                tft180_show_string(x, y, "L ");
+                skv->value.vi32 = -1 * skv->value.vi32;
+            } else {
+                tft180_show_string(x, y, "R ");
+            }
+            x += 2 * CHAR_WIDTH;
+            switch (skv->value.vi32) {
+                case (0) : {
+                    tft180_show_string(x, y, "NULL");
+                    break;
+                };
+                case (1) : {
+                    tft180_show_string(x, y, "STRAIGHT");
+                    break;
+                };
+                case (2) : {
+                    tft180_show_string(x, y, "CURVE");
+                    break;
+                };
+                case (3) : {
+                    tft180_show_string(x, y, "ROUNDABOUT");
+                    break;
+                };
+                case (4) : {
+                    tft180_show_string(x, y, "CROSS");
+                    break;
+                };
+
+                default : {
+                    tft180_show_int(x, y, skv->value.vi32, NUM_LENGTH);
+                    break;
+                }
+            }
+            break;
+        };
     
-        default: {
+        default : {
             tft180_show_string(x, y, "WRONG_NUM");
             break;
         }
@@ -32,8 +69,6 @@ void show_skvs(struct ShowKeyValue *skvs, int skvs_length){
     show_value(&skvs[0], COLUMN_RIGHT_X, 0*CHAR_HEIGHT);
     tft180_show_string(COLUMN_LEFT_X, 1*CHAR_HEIGHT, skvs[1].key);
     show_value(&skvs[1], COLUMN_RIGHT_X, 1*CHAR_HEIGHT); */
-
-    // 1*CHAR_HEIGHT
     for (i = 0; i < skvs_length; i++){
         tft180_show_string(COLUMN_LEFT_X, i*CHAR_HEIGHT, skvs[i].key);
         show_value(&skvs[i], COLUMN_RIGHT_X, i*CHAR_HEIGHT);
