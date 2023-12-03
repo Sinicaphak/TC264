@@ -8,7 +8,6 @@
 
 // include
 #include "zf_common_headfile.h"
-extern struct Element element;
 
 enum Element_TYPE {
     // 直线
@@ -27,6 +26,8 @@ struct Element {
     // 元素方向, false为左，true为右
     bool dir;
 };
+
+extern struct Element element;
 
 /**
  * 识别元素. 

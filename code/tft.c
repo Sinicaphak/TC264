@@ -16,7 +16,7 @@ void show_value(struct ShowKeyValue *skv, uint16 x, uint16 y){
         };
         case (TYPE_ELEMENT) : {
             if (skv->value.vi32 < 0){
-                tft180_show_string(x, y, "L ");
+                tft180_show_string(x, y, "LL ");
                 skv->value.vi32 = -1 * skv->value.vi32;
             } else {
                 tft180_show_string(x, y, "R ");
@@ -45,6 +45,8 @@ void show_value(struct ShowKeyValue *skv, uint16 x, uint16 y){
                 };
 
                 default : {
+                    tft180_show_string(x, y, "NULL");
+                    x += 2 * CHAR_WIDTH;
                     tft180_show_int(x, y, skv->value.vi32, NUM_LENGTH);
                     break;
                 }
@@ -65,12 +67,8 @@ void show_skvs(struct ShowKeyValue *skvs, int skvs_length){
     }
     int i = 0;
 
-    /* tft180_show_string(COLUMN_LEFT_X, 0*CHAR_HEIGHT, skvs[0].key);
-    show_value(&skvs[0], COLUMN_RIGHT_X, 0*CHAR_HEIGHT);
-    tft180_show_string(COLUMN_LEFT_X, 1*CHAR_HEIGHT, skvs[1].key);
-    show_value(&skvs[1], COLUMN_RIGHT_X, 1*CHAR_HEIGHT); */
     for (i = 0; i < skvs_length; i++){
-        tft180_show_string(COLUMN_LEFT_X, i*CHAR_HEIGHT, skvs[i].key);
+    //    tft180_show_string(COLUMN_LEFT_X, (uint16)(i*CHAR_HEIGHT), skvs[i].key);
         show_value(&skvs[i], COLUMN_RIGHT_X, i*CHAR_HEIGHT);
     }
 }

@@ -3,9 +3,9 @@
 double target_speed = 300;
 struct PositionalPid sm_pid;
 struct Parameter sm_parameter = {
-    .kp = 7.0e-2,
+    .kp = 8e-2,
     .ki = 0,
-    .kd = 0,
+    .kd = 1e-3,
     .i_max = 0,
     .out_max = 80,
 };
@@ -32,7 +32,11 @@ void process_data(void){
     double server_input = get_line_error();
     active_p_pid(&sm_pid, server_input, &sm_parameter);
 
-    motor_input_l = 1300;
-    motor_input_r = 1300;
-    server_motor_input =sm_pid.output + SERVER_DUTY_MIDDLE + END_SHIFT;
+    motor_input_l = 1400;
+    motor_input_r = 1400;
+    server_motor_input =sm_pid.output + SERVER_DUTY_MIDDLE;
+    // element = recognize_element(
+    //     leftline, MT9V03X_H / 2, MT9V03X_H - 2, 
+    //     rightline, MT9V03X_H / 2, MT9V03X_H - 2
+    // );
 }

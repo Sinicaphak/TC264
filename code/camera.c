@@ -70,3 +70,7 @@ void difsum_right(uint8 y,uint8 x){
         }
     }
 }
+
+
+
+

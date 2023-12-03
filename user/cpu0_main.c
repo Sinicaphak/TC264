@@ -43,6 +43,7 @@
 // **************************** 代码区域 ****************************
 #define SKVS_LENGHT 4
 #define SKVS_T_LENGHT 2
+#define IS_TEST 1
 
 void common_run(void){
    // 要打印的数值
@@ -51,7 +52,7 @@ void common_run(void){
 
     skv1.key = "version";
     skv1.type = TYPE_UINT;
-    skv1.value.vu32 = 65;
+    skv1.value.vu32 = 66;
 
     skv2.key = "smpid.in";
     skv2.type = TYPE_DOUBLE;
@@ -72,8 +73,9 @@ void common_run(void){
     {
         // 此处编写需要循环执行的代码
         if(mt9v03x_finish_flag) {
-            print_binaryzation_image_hl((const double **)mt9v03x_image, MT9V03X_W, MT9V03X_H, 125, RGB565_BLACK, RGB565_WHITE);
-            // tft180_displayimage03x((const uint8 *)mt9v03x_image, 160, 128);
+            // print_binaryzation_image_hl((const double **)mt9v03x_image, MT9V03X_W, MT9V03X_H, 125, RGB565_BLACK, RGB565_WHITE);
+            tft180_displayimage03x((const uint8 *)mt9v03x_image, 160, 128);
+
             image_boundary_process();
             switch_trackline();
             show_line();
@@ -99,7 +101,6 @@ void common_run(void){
         show_skvs(skvs, SKVS_LENGHT);
     }
 }
-
 void test_run(void){
     struct ShowKeyValue skvs_t[SKVS_T_LENGHT];
     struct ShowKeyValue skvt1, skvt2;
@@ -107,7 +108,39 @@ void test_run(void){
 
     skvt1.key = "version";
     skvt1.type = TYPE_UINT;
-    skvt1.value.vu32 = 965;
+    skvt1.value.vu32 = 3;
+
+    skvt2.key = "element";
+    skvt2.type = TYPE_ELEMENT;
+    skvt2.value.vi32 = 0;
+
+    skvs_t[0] = skvt1;
+
+    while (TRUE)
+    {
+        // 此处编写需要循环执行的代码
+        if(mt9v03x_finish_flag) {
+            // tft180_show_gray_image (0, 0, (const uint8 *)mt9v03x_image, MT9V03X_W, MT9V03X_H, 160, 128, 150);
+            tft180_displayimage03x((const uint8 *)mt9v03x_image, 160, 128);
+            epn_line_left((const uint8 *)mt9v03x_image, sidelines, LEFT);
+            print_sidelines(sidelines);
+        
+            // skvs_t[1] = skvt2;
+            // show_skvs(skvs_t, SKVS_LENGHT);
+
+            mt9v03x_finish_flag = 0;
+        }
+    }
+}
+// convolution((const uint8 *)mt9v03x_image, MT9V03X_W, MT9V03X_H, &cc, result); tft180.c 491行报错
+void test_run_convolution(void){
+    struct ShowKeyValue skvs_t[SKVS_T_LENGHT];
+    struct ShowKeyValue skvt1, skvt2;
+    double result[MT9V03X_H][MT9V03X_W];
+
+    skvt1.key = "version";
+    skvt1.type = TYPE_UINT;
+    skvt1.value.vu32 = 1;
 
     skvt2.key = "element";
     skvt2.type = TYPE_ELEMENT;
@@ -118,18 +151,18 @@ void test_run(void){
         // 此处编写需要循环执行的代码
         if(mt9v03x_finish_flag) {
             tft180_displayimage03x((const uint8 *)mt9v03x_image, 160, 128);
-            convolution(mt9v03x_image, MT9V03X_W, MT9V03X_H, &cc, result);
+            convolution((const uint8 *)mt9v03x_image, MT9V03X_W, MT9V03X_H, &cc, result);
             print_binaryzation_image(result, MT9V03X_W, MT9V03X_H, 150, RGB565_GREEN);
-            // if (element.dir){
-            //     skvt2.value.vi32 = element.type;
-            // } else {
-            //     skvt2.value.vi32 = -1 * element.type;
-            // };
+            if (element.dir){
+                skvt2.value.vi32 = element.type;
+            } else {
+                skvt2.value.vi32 = -1 * element.type;
+            };
             mt9v03x_finish_flag = 0;
         }
-        // skvs_t[0] = skvt1;
-        // skvs_t[1] = skvt2;
-        // show_skvs(skvs_t, SKVS_LENGHT);
+        skvs_t[0] = skvt1;
+        skvs_t[1] = skvt2;
+         show_skvs(skvs_t, SKVS_LENGHT);
     }
 }
 
@@ -143,8 +176,11 @@ int core0_main(void)
 
     // 此处编写用户代码 例如外设初始化代码等
     cpu_wait_event_ready();         // 等待所有核心初始化完毕
-    // common_run();
-    test_run();
+    if (IS_TEST){
+        test_run();
+    } else {
+        common_run();
+    }
 
     return 0;
 }
