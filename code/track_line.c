@@ -32,8 +32,8 @@ void process_data(void){
     double server_input = get_line_error();
     active_p_pid(&sm_pid, server_input, &sm_parameter);
 
-    motor_input_l = 1400;
-    motor_input_r = 1400;
+    motor_input_l = 1600;
+    motor_input_r = 1600;
     server_motor_input =sm_pid.output + SERVER_DUTY_MIDDLE;
     // element = recognize_element(
     //     leftline, MT9V03X_H / 2, MT9V03X_H - 2, 

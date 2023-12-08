@@ -42,8 +42,8 @@
 
 // **************************** 代码区域 ****************************
 #define SKVS_LENGHT 4
-#define SKVS_T_LENGHT 3
-#define IS_TEST 1
+#define SKVS_T_LENGHT 1
+#define IS_TEST 0
 
 void common_run(void){
    // 要打印的数值
@@ -52,7 +52,7 @@ void common_run(void){
 
     skv1.key = "version";
     skv1.type = TYPE_UINT;
-    skv1.value.vu32 = 66;
+    skv1.value.vu32 = 1;
 
     skv2.key = "smpid.in";
     skv2.type = TYPE_DOUBLE;
@@ -95,10 +95,11 @@ void common_run(void){
             skvs[1] = skv2;
             skvs[2] = skv3;
             skvs[3] = skv4;
+            show_skvs(skvs, SKVS_LENGHT);
 
             mt9v03x_finish_flag = 0;
         }
-        show_skvs(skvs, SKVS_LENGHT);
+        
     }
 }
 void test_run(void){
@@ -109,14 +110,6 @@ void test_run(void){
     skvt1.type = TYPE_UINT;
     skvt1.value.vu32 = 15;
 
-    skvt2.key = "ipts0_num";
-    skvt2.type = TYPE_INT;
-    skvt2.value.vi32 = 114;
-
-    skvt3.key = "ipts1_num";
-    skvt3.type = TYPE_INT;
-    skvt3.value.vi32 = 514;
-
     skvs_t[0] = skvt1;
 
 
@@ -126,13 +119,10 @@ void test_run(void){
         if(mt9v03x_finish_flag) {
             // tft180_show_gray_image (0, 0, (const uint8 *)mt9v03x_image, MT9V03X_W, MT9V03X_H, 160, 128, 150);
             tft180_displayimage03x((const uint8* )mt9v03x_image, SCREEN_WIDTH, SCREEN_HEIGHT);
-            image_process();
-            print_sidelines();
+            image_boundary_process();
+            show_line();
+            process_data();
 
-            skvt2.value.vi32 = ipts0_num;
-            skvt3.value.vi32 = ipts1_num;
-            skvs_t[1] = skvt2;
-            skvs_t[2] = skvt3;
             show_skvs(&skvs_t, SKVS_T_LENGHT);
             mt9v03x_finish_flag = 0;
         }
