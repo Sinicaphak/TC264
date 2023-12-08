@@ -1,7 +1,7 @@
 #include "zf_common_headfile.h"
 
 int16 trackline[MT9V03X_H];//跟踪线
-enum track_type_e track_type = TRACK_MID;//默认循中线
+// enum track_type_e track_type = TRACK_MID;//默认循中线
 //将边线赋值给循迹跟踪线
 void switch_trackline(void){
     if(track_type == TRACK_MID){

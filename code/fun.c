@@ -1,5 +1,6 @@
 #include "zf_common_headfile.h"
 
+
 // for循环里计数用
 int i = 0;
 int j = 0;
@@ -89,4 +90,16 @@ double smooth(double *history, int length, double input){
 
 double diff(double l, double r){
 	return (l - r) / (l + r);
+}
+
+void draw_matrix(void) {
+    uint16 start_x = (SCREEN_WIDTH - MATRIX_SIZE) / 2;
+    uint16 start_y = (SCREEN_HEIGHT - MATRIX_SIZE) / 2;
+    uint16 x, y;
+
+    for ( y = start_y; y < start_y + MATRIX_SIZE; y++) {
+        for ( x = start_x; x < start_x + MATRIX_SIZE; x++) {
+            ips200_draw_point(x, y, RGB565_RED);
+        }
+    }
 }

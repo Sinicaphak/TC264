@@ -68,7 +68,7 @@ void show_skvs(struct ShowKeyValue *skvs, int skvs_length){
     int i = 0;
 
     for (i = 0; i < skvs_length; i++){
-    //    tft180_show_string(COLUMN_LEFT_X, (uint16)(i*CHAR_HEIGHT), skvs[i].key);
+        tft180_show_string(COLUMN_LEFT_X, i*CHAR_HEIGHT, skvs[i].key);
         show_value(&skvs[i], COLUMN_RIGHT_X, i*CHAR_HEIGHT);
     }
 }
