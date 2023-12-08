@@ -13,3 +13,13 @@ void show_line(void){
         ips200_draw_point((uint16)centerline[i], i, RGB565_PURPLE);//×ÏÉ«ÖÐÏß
     }
 }
+
+void print_sidelines(void){
+    int i = 0;
+    for(i = 0; i < ipts0_num; i++){
+        ips200_draw_point((uint16)(ipts0[i][0]), (uint16)(ipts0[i][1]), RGB565_RED);
+    }
+    for(i = 0; i < ipts1_num; i++){
+        ips200_draw_point((uint16)(ipts1[i][0]), (uint16)(ipts1[i][1]), RGB565_GREEN);
+    }
+}

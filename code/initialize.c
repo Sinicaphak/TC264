@@ -1,5 +1,14 @@
 #include "zf_common_headfile.h"
 
+// void init_sideline(void){
+//     int i = 0;
+//     for (i = 0; i < SIDELINES_LENGTH; i++) {
+//         sidelines[i].dir = DEFAULT;
+//         sidelines[i].x = 0;
+//         sidelines[i].y = 0;
+//     }
+// }
+
 void init_motor(void){
     if (IS_FULL_BRIDGE){
         // 初始化全桥电机
@@ -34,4 +43,5 @@ void init_all(void){
 
     sm_pid.err_now = 1;
     sm_pid.output = 2;
+    // init_sideline();
 }

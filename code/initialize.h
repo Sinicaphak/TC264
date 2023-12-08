@@ -35,6 +35,7 @@
 #define ENCODER_RIGHT_B                 (TIM4_ENCODER_CH2_P00_9)
 
 void init_all(void);
+// void init_sideline(void);
 
 // endif
 #endif

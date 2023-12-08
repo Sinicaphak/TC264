@@ -2,6 +2,10 @@
 #ifndef _FUN_H_
 #define _FUN_H_
 
+#define SCREEN_WIDTH  160
+#define SCREEN_HEIGHT 128
+#define MATRIX_SIZE   10
+
 
 // 将input限制在 [ -limit , limit ]
 double limit_amplitude_absolute(double input, double limit);
@@ -24,5 +28,6 @@ double smooth(double *history, int length, double input);
 // 求车轮转速 = 编码器脉冲数 * 减速比 / 每圈脉冲数
 double calculate_speed(int pluse);
 
+void draw_matrix(void);
 // endif
 #endif
