@@ -86,7 +86,10 @@ enum track_type_e track_type = TRACK_MID;
 
 image_t img_raw = DEF_IMAGE(mt9v03x_image, MT9V03X_H, MT9V03X_W);
 //float garage_begin_y = 35;
-uint8 init_thres = 140;
+///////////////// 修改 //////////////////////
+// uint8 init_thres = 140;
+uint8 init_thres = 50;
+///////////////// 修改结束 //////////////////////
 
 int no_found0 = 0;
 int no_found1 = 0;
@@ -121,11 +124,12 @@ void image_process(void){
         no_found0 ++;
         Found0 = false;
         ///////////////// 修改 //////////////////////
-        tft180_show_string(COLUMN_LEFT_X, (uint16)(7*8), "NOT FOUND0");
+        tft180_show_string(COLUMN_LEFT_X, (3*CHAR_HEIGHT), "NOT FOUND0");
         ///////////////// 修改结束 //////////////////////
     }
 
-    int x2 = img_raw.width / 2 + begin_x, y2 = begin_y;
+    int x2 = img_raw.width / 2 + begin_x,
+        y2 = begin_y;
     ipts1_num = sizeof(ipts1) / sizeof(ipts1[0]);
     for (; x2 < img_raw.width - 1; x2++) {
         if (AT_IMAGE(&img_raw, x2 + 1, y2) < thres1) {
@@ -141,7 +145,7 @@ void image_process(void){
         no_found1 ++;
         Found1 = false;
         ///////////////// 修改 //////////////////////
-        tft180_show_string(COLUMN_LEFT_X, (uint16)(9*8), "NOT FOUND1");
+        tft180_show_string(COLUMN_LEFT_X, (4*CHAR_HEIGHT), "NOT FOUND1");
         ///////////////// 修改结束 //////////////////////
     }
 

@@ -107,7 +107,7 @@ void test_run(void){
 
     skvt1.key = "version";
     skvt1.type = TYPE_UINT;
-    skvt1.value.vu32 = 12;
+    skvt1.value.vu32 = 15;
 
     skvt2.key = "ipts0_num";
     skvt2.type = TYPE_INT;
@@ -127,7 +127,6 @@ void test_run(void){
             // tft180_show_gray_image (0, 0, (const uint8 *)mt9v03x_image, MT9V03X_W, MT9V03X_H, 160, 128, 150);
             tft180_displayimage03x((const uint8* )mt9v03x_image, SCREEN_WIDTH, SCREEN_HEIGHT);
             image_process();
-            // track_line(sidelines);
             print_sidelines();
 
             skvt2.value.vi32 = ipts0_num;
