@@ -20,7 +20,8 @@ enum ShowValueType {
     TYPE_DOUBLE,
     TYPE_UINT,
     TYPE_INT,
-    TYPE_ELEMENT
+    TYPE_ELEMENT,
+    TYPE_ROUND_STATE
 };
 // ShowKeyValue中可能出现的值
 union ShowValue {

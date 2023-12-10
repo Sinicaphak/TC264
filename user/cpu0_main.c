@@ -41,34 +41,24 @@
 // 本例程是开源库空工程 可用作移植或者测试各类内外设
 
 // **************************** 代码区域 ****************************
-#define SKVS_LENGHT 4
-#define SKVS_T_LENGHT 1
-#define IS_TEST 0
+#define SKVS_LENGHT 1
+#define SKVS_T_LENGHT 2
+#define IS_TEST 1
 
 void common_run(void){
-   // 要打印的数值
+    // 要打印的数值
     struct ShowKeyValue skvs[SKVS_LENGHT];
     struct ShowKeyValue skv1, skv2, skv3, skv4;
 
     skv1.key = "version";
     skv1.type = TYPE_UINT;
-    skv1.value.vu32 = 1;
+    skv1.value.vu32 = 14;
 
-    skv2.key = "smpid.in";
-    skv2.type = TYPE_DOUBLE;
-    skv2.value.d = 114;
-
-    skv3.key = "smpid.out";
-    skv3.type = TYPE_DOUBLE;
-    skv3.value.d = 514;
-
-    skv4.key = "servo_out";
-    skv4.type = TYPE_DOUBLE;
-    skv4.value.d = 1919;
+    skv2.key = "rs";
+    skv2.type = TYPE_ROUND_STATE;
 
     skvs[0] = skv1;
-
-
+    skvs[1] = skv2;
     while (TRUE)
     {
         // 此处编写需要循环执行的代码
@@ -78,24 +68,11 @@ void common_run(void){
 
             image_boundary_process();
             switch_trackline();
-            show_line();
             process_data();
+            show_line();
 
-            skv2.key = "smpid.in";
-            skv2.type = TYPE_DOUBLE;
-            skv2.value.d = sm_pid.err_now;
-
-            skv3.key = "smpid.out";
-            skv3.type = TYPE_DOUBLE;
-            skv3.value.d = sm_pid.output;
-
-            skv4.key = "servo_out";
-            skv4.type = TYPE_DOUBLE;
-            skv4.value.d = server_motor_input;
-            skvs[1] = skv2;
-            skvs[2] = skv3;
-            skvs[3] = skv4;
-            show_skvs(skvs, SKVS_LENGHT);
+            // printf("%d, %d, %f, %f\n", encoder_data_l, encoder_data_r, motor_input_l, motor_input_r);
+            show_skvs(skvs, SKVS_LENGHT); 
 
             mt9v03x_finish_flag = 0;
         }
@@ -104,14 +81,17 @@ void common_run(void){
 }
 void test_run(void){
     struct ShowKeyValue skvs_t[SKVS_T_LENGHT];
-    struct ShowKeyValue skvt1, skvt2, skvt3;
+    struct ShowKeyValue skvt1, skvt2;
 
-    skvt1.key = "version";
+    skvt1.key = "v_t";
     skvt1.type = TYPE_UINT;
-    skvt1.value.vu32 = 15;
+    skvt1.value.vu32 = 22;
+
+    skvt2.key = "rs";
+    skvt2.type = TYPE_ROUND_STATE;
 
     skvs_t[0] = skvt1;
-
+    skvs_t[1] = skvt2;
 
     while (TRUE)
     {
@@ -120,8 +100,10 @@ void test_run(void){
             // tft180_show_gray_image (0, 0, (const uint8 *)mt9v03x_image, MT9V03X_W, MT9V03X_H, 160, 128, 150);
             tft180_displayimage03x((const uint8* )mt9v03x_image, SCREEN_WIDTH, SCREEN_HEIGHT);
             image_boundary_process();
-            show_line();
+            switch_trackline();
             process_data();
+            show_line();
+            show_mark();
 
             show_skvs(&skvs_t, SKVS_T_LENGHT);
             mt9v03x_finish_flag = 0;

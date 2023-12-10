@@ -53,7 +53,39 @@ void show_value(struct ShowKeyValue *skv, uint16 x, uint16 y){
             }
             break;
         };
-    
+        case (TYPE_ROUND_STATE) : {
+            switch (round_state) {
+                case (NO_ROUND) : {
+                    tft180_show_string(x, y, "NO_ROUND");
+                    break;
+                };
+                case (READY_IN_ROUND) : {
+                    tft180_show_string(x, y, "READY_IN_ROUND");
+                    break;
+                };
+                case (IN_ROUND) : {
+                    tft180_show_string(x, y, "IN_ROUND");
+                    break;
+                };
+                case (ROUNDING) : {
+                    tft180_show_string(x, y, "ROUNDING");
+                    break;
+                };
+                case (READY_OUT_ROUND) : {
+                    tft180_show_string(x, y, "READY_OUT_ROUND");
+                    break;
+                };
+                case (OUT_ROUND) : {
+                    tft180_show_string(x, y, "OUT_ROUND");
+                    break;
+                };
+                default : {
+                    tft180_show_string(x, y, "WRONG_ROUND_STATE");
+                    break;
+                }
+            }
+            break;
+        }
         default : {
             tft180_show_string(x, y, "WRONG_NUM");
             break;

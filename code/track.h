@@ -14,6 +14,6 @@ extern int16 trackline[MT9V03X_H];
 // extern enum track_type_e track_type;
 
 void switch_trackline(void);
-void choose_tracktype(void);
+// void choose_tracktype(enum track_type_e type);
 #endif 
 

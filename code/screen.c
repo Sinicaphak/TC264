@@ -25,3 +25,11 @@ void print_sidelines(void){
         ips200_draw_point((uint16)(ipts1[i][0]), (uint16)(ipts1[i][1]), RGB565_GREEN);
     }
 }
+
+void show_mark(void){
+    for (int i = 0; i < 10; i++) {
+        ips200_draw_point((uint16)(i), 20, RGB565_GREEN);
+        ips200_draw_point((uint16)(i), 40, RGB565_GREEN);
+        ips200_draw_point((uint16)(i), 60, RGB565_GREEN);
+    }
+}

@@ -3,7 +3,7 @@
 #define _MOTOR_H_
 
 // 电机最大值
-#define MOTOR_MAX (3000)
+#define MOTOR_MAX (4500)
 
 extern double motor_input_l;
 extern double motor_input_r;

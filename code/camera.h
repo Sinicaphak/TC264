@@ -1,12 +1,11 @@
 // ifndef
 #ifndef _CAMERA_H_
 #define _CAMERA_H_
+
+#define RIGHT_LINE_SHIFT 0
+#define LEFT_LINE_SHIFT 0
 //include
 #include "zf_common_headfile.h"
-
-// 右边线算出来总是往右偏移这个值
-// #define RIGHT_SHIFT 20
-#define RIGHT_SHIFT 5
 
 extern int16 centerline[MT9V03X_H];
 extern int16 leftline[MT9V03X_H];

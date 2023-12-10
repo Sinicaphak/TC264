@@ -21,6 +21,6 @@ void switch_trackline(void){
     }
 }
 //选择如何循线，大家可以自由发挥
-void choose_tracktype(void){
-
+void choose_tracktype(enum track_type_e type){
+    track_type = type;
 }

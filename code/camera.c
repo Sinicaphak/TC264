@@ -7,7 +7,7 @@ uint8 leftline_num;//左线点数量
 uint8 rightline_num;//右线点数量
 /* 修改 */
 //原 // int16 SAR_THRE = 17;//差比和阈值
-int16 SAR_THRE = 20;//差比和阈值
+int16 SAR_THRE = 17;//差比和阈值
 /* 修改结束 */
 uint8 PIX_PER_METER = 20;//每米的像素数
 
@@ -46,7 +46,7 @@ void difsum_left(uint8 y,uint8 x){
             sum = (float)((mt9v03x_image[y][col] + mt9v03x_image[y][col - mov - 1]));
             sar = fabs(dif / sum);//求取差比和
         if(sar > SAR_THRE){//差比和大于阈值代表深浅色突变
-            leftline[y] = (int16)(col - mov);
+            leftline[y] = (int16)(col - mov) + LEFT_LINE_SHIFT;
             leftline_num ++;//左线点计数+
             break;//找到边界后退出
         }
@@ -64,7 +64,7 @@ void difsum_right(uint8 y,uint8 x){
         sum = (float)((mt9v03x_image[y][col] + mt9v03x_image[y][col + mov + 1]));
         sar = fabs(dif / sum);//求取差比和
         if(sar > SAR_THRE){//差比和大于阈值代表深浅色突变
-            rightline[y] = (int16)(col + mov);
+            rightline[y] = (int16)(col + mov) - RIGHT_LINE_SHIFT;
             rightline_num ++;//右线点计数+
             break;//找到边界后退出
         }

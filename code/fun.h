@@ -19,8 +19,8 @@ double median(double *history, int length);
 void move_array_back(double *history, int length);
 // 将数组后移一位, input插入到第一位
 void move_back_and_insert(double *history, int length, double input);
-// 在main中集中处理采集到的数据
-void process_data(void);
+// 滑动窗口滤波: 将数组后移一位, input插入到第一位, 然后求平均值, input大于阈值时返回均值
+double sliding_window_filter(double *history, int length, double input, double threshold);
 // 差比和
 double diff(double l, double r);
 // 平滑滤波: 将数组后移一位, input插入到第一位, 然后求平均值

@@ -92,6 +92,21 @@ double diff(double l, double r){
 	return (l - r) / (l + r);
 }
 
+double sliding_window_filter(double *history, int length, double input, double threshold){
+	double output = 0;
+	double average_value = 0;	
+	average_value = smooth(history, length, input);
+	
+	if (fabs(input - average_value) > threshold){
+		output = average_value;
+	}else{
+		output = input;
+	}
+	
+	return output;
+
+}
+
 void draw_matrix(void) {
     uint16 start_x = (SCREEN_WIDTH - MATRIX_SIZE) / 2;
     uint16 start_y = (SCREEN_HEIGHT - MATRIX_SIZE) / 2;
