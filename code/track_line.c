@@ -53,15 +53,16 @@ double get_line_error(void){
 
 
 void process_data(void){
-    
+    // choose_tracktype(TRACK_MID);
     round_track();
+    
     double server_input = get_line_error();
     active_p_pid(&sm_pid, server_input - END_SHIFT, &sm_parameter);
     // µç»úpid
     // active_p_pid(&lm_pid, target_speed - encoder_data_l, &lm_parameter);
     // active_p_pid(&rm_pid, target_speed - encoder_data_r, &rm_parameter);
 
-    motor_input_l = 2300;
-    motor_input_r = 2300;
+    motor_input_l = 1800;
+    motor_input_r = 1500;
     server_motor_input =sm_pid.output + SERVER_DUTY_MIDDLE;
 }

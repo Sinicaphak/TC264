@@ -9,10 +9,16 @@ uint8 rightline_num;//右线点数量
 //原 // int16 SAR_THRE = 17;//差比和阈值
 int16 SAR_THRE = 17;//差比和阈值
 /* 修改结束 */
-uint8 PIX_PER_METER = 20;//每米的像素数
+/* 修改 */
+//原 // uint8 PIX_PER_METER = 20;//每米的像素数
+uint8 PIX_PER_METER = 50;//每米的像素数
+/* 修改结束 */
+
+boolean right_flag = false;
 
 //逐行寻找边界点
 void image_boundary_process(void){
+    right_flag = false;
     uint8 row;//行
     //uint8 col = MT9V03X_W/2;//列
     uint8 start_col = MT9V03X_W / 2;//各行起点的列坐标,默认为MT9V03X_W / 2
@@ -20,6 +26,7 @@ void image_boundary_process(void){
     leftline_num = 0;
     rightline_num = 0;
     for(row = MT9V03X_H - 1; row >= 1; row--){
+        right_flag = false;
     //选用上一行的中点作为下一行计算起始点，节省速度，同时防止弯道的左右两边均出现与画面一侧
         if(row != MT9V03X_H - 1){
             start_col = (uint8)(0.4 * centerline[row] + 0.3 * start_col + 0.1 * MT9V03X_W);//一阶低通滤波，防止出现噪点影响下一行的起始点
@@ -64,9 +71,14 @@ void difsum_right(uint8 y,uint8 x){
         sum = (float)((mt9v03x_image[y][col] + mt9v03x_image[y][col + mov + 1]));
         sar = fabs(dif / sum);//求取差比和
         if(sar > SAR_THRE){//差比和大于阈值代表深浅色突变
-            rightline[y] = (int16)(col + mov) - RIGHT_LINE_SHIFT;
-            rightline_num ++;//右线点计数+
-            break;//找到边界后退出
+            if (right_flag) {
+                rightline[y] = (int16)(col + mov) - RIGHT_LINE_SHIFT;
+                rightline_num ++;//右线点计数+
+                break;//找到边界后退出
+            } else {
+                right_flag = true;
+                continue;
+            }
         }
     }
 }

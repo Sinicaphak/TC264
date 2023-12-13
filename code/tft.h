@@ -7,13 +7,13 @@
 // 第一列的起始x坐标
 #define COLUMN_LEFT_X (0*CHAR_WIDTH)
 // 第二列的起始x坐标
-#define COLUMN_RIGHT_X (10*CHAR_WIDTH)
+#define COLUMN_RIGHT_X (5*CHAR_WIDTH)
 // 显示浮点数的长度
 #define FLOAT_NUM_LENGTH (5)
 #define FLOAT_POINTNUM_LENGTH (2)
-#define NUM_LENGTH (5)
+#define NUM_LENGTH (3)
 
-#define SHOW_Y_MAX (7)
+#define SHOW_Y_MAX (10)
 
 // ShowKeyValue中可能出现的类型
 enum ShowValueType {
@@ -21,13 +21,16 @@ enum ShowValueType {
     TYPE_UINT,
     TYPE_INT,
     TYPE_ELEMENT,
-    TYPE_ROUND_STATE
+    TYPE_ROUND_STATE,
+    TYPE_BOOLEAN,
+    TYPE_TRACKLINE
 };
 // ShowKeyValue中可能出现的值
 union ShowValue {
     double d;
     int vi32;
     uint32 vu32;
+    boolean bo;
 };
 // key为字符串, type为值的类型, value为值
 struct ShowKeyValue {

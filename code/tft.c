@@ -1,6 +1,6 @@
 #include "zf_common_headfile.h"
 //zf_device_tft180 tft180_display_font中默认字体为8X16
-void show_value(struct ShowKeyValue *skv, uint16 x, uint16 y){
+void show_value(struct ShowKeyValue *skv, int x, int y){
     switch (skv->type) {
         case (TYPE_DOUBLE) : {
             tft180_show_float(x, y, skv->value.d, FLOAT_NUM_LENGTH, FLOAT_POINTNUM_LENGTH);
@@ -56,38 +56,72 @@ void show_value(struct ShowKeyValue *skv, uint16 x, uint16 y){
         case (TYPE_ROUND_STATE) : {
             switch (round_state) {
                 case (NO_ROUND) : {
-                    tft180_show_string(x, y, "NO_ROUND");
+                    tft180_show_string(x, y, "N_R");
+                    break;
+                };
+                case (PRE_IN_ROUND) : {
+                    tft180_show_string(x, y, "P_IR");
                     break;
                 };
                 case (READY_IN_ROUND) : {
-                    tft180_show_string(x, y, "READY_IN_ROUND");
+                    tft180_show_string(x, y, "R_IR");
                     break;
                 };
                 case (IN_ROUND) : {
-                    tft180_show_string(x, y, "IN_ROUND");
+                    tft180_show_string(x, y, "IR");
                     break;
                 };
                 case (ROUNDING) : {
-                    tft180_show_string(x, y, "ROUNDING");
+                    tft180_show_string(x, y, "RING");
                     break;
                 };
                 case (READY_OUT_ROUND) : {
-                    tft180_show_string(x, y, "READY_OUT_ROUND");
+                    tft180_show_string(x, y, "R_OR");
                     break;
                 };
                 case (OUT_ROUND) : {
-                    tft180_show_string(x, y, "OUT_ROUND");
+                    tft180_show_string(x, y, "OR");
                     break;
                 };
                 default : {
-                    tft180_show_string(x, y, "WRONG_ROUND_STATE");
+                    tft180_show_string(x, y, "WRS");
+                    break;
+                }
+            }
+            break;
+        }
+        case (TYPE_BOOLEAN) : {
+            if (skv->value.bo){
+                tft180_show_string(x, y, "T");
+            } else {
+                tft180_show_string(x, y, "F");
+            }
+            break;
+        }
+        case (TYPE_TRACKLINE) : {
+            switch (track_type) {
+                case TRACK_LEFT : {
+                    tft180_show_string(x, y, "L");
+                    break;
+                }
+                case TRACK_MID : {
+                    tft180_show_string(x, y, "M");
+                    break;
+                }
+                case TRACK_RIGHT : {
+                    tft180_show_string(x, y, "R");
+                    break;
+                }
+                
+                default: {
+                    tft180_show_string(x, y, "W_RT");
                     break;
                 }
             }
             break;
         }
         default : {
-            tft180_show_string(x, y, "WRONG_NUM");
+            tft180_show_string(x, y, "W_N");
             break;
         }
     }
@@ -102,5 +136,6 @@ void show_skvs(struct ShowKeyValue *skvs, int skvs_length){
     for (i = 0; i < skvs_length; i++){
         tft180_show_string(COLUMN_LEFT_X, i*CHAR_HEIGHT, skvs[i].key);
         show_value(&skvs[i], COLUMN_RIGHT_X, i*CHAR_HEIGHT);
+        // show_value(&skvs[i], COLUMN_LEFT_X, i*CHAR_HEIGHT);
     }
 }

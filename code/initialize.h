@@ -26,13 +26,20 @@
 #define SERVO_MOTOR_FREQ            (50)
 
 // ±àÂëÆ÷
-#define ENCODER_LEFT                   (TIM2_ENCODER)
-#define ENCODER_LEFT_A                 (TIM2_ENCODER_CH1_P33_7)
-#define ENCODER_LEFT_B                 (TIM2_ENCODER_CH2_P33_6)
+// #define ENCODER_LEFT                   (TIM2_ENCODER)
+// #define ENCODER_LEFT_A                 (TIM2_ENCODER_CH1_P33_7)
+// #define ENCODER_LEFT_B                 (TIM2_ENCODER_CH2_P33_6)
 
-#define ENCODER_RIGHT                   (TIM4_ENCODER)
-#define ENCODER_RIGHT_A                 (TIM4_ENCODER_CH1_P02_8)
-#define ENCODER_RIGHT_B                 (TIM4_ENCODER_CH2_P00_9)
+// #define ENCODER_RIGHT                   (TIM4_ENCODER)
+// #define ENCODER_RIGHT_A                 (TIM4_ENCODER_CH1_P02_8)
+// #define ENCODER_RIGHT_B                 (TIM4_ENCODER_CH2_P00_9)
+#define ENCODER_RIGHT                   (TIM2_ENCODER)
+#define ENCODER_RIGHT_A                (TIM2_ENCODER_CH1_P33_7)
+#define ENCODER_RIGHT_B               (TIM2_ENCODER_CH2_P33_6)
+
+#define ENCODER_LEFT                   (TIM4_ENCODER)
+#define ENCODER_LEFT_A                 (TIM4_ENCODER_CH1_P02_8)
+#define ENCODER_LEFT_B                 (TIM4_ENCODER_CH2_P00_9)
 
 void init_all(void);
 // void init_sideline(void);

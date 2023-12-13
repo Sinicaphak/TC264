@@ -42,7 +42,8 @@
 
 // **************************** 代码区域 ****************************
 #define SKVS_LENGHT 1
-#define SKVS_T_LENGHT 2
+#define SKVS_T_LENGHT 6
+#define SKVS_T1_LENGHT 4
 #define IS_TEST 1
 
 void common_run(void){
@@ -81,17 +82,36 @@ void common_run(void){
 }
 void test_run(void){
     struct ShowKeyValue skvs_t[SKVS_T_LENGHT];
-    struct ShowKeyValue skvt1, skvt2;
+    struct ShowKeyValue skvt1, skvt2, skvt3, skvt4, skvt5, skvt6;
 
     skvt1.key = "v_t";
     skvt1.type = TYPE_UINT;
-    skvt1.value.vu32 = 22;
+    skvt1.value.vu32 = 38;
 
     skvt2.key = "rs";
     skvt2.type = TYPE_ROUND_STATE;
 
+    skvt3.key = "ri_s";
+    skvt3.type = TYPE_BOOLEAN;
+    skvt3.value.bo = true;
+
+    skvt4.key = "o_j";
+    skvt4.type = TYPE_INT;
+    skvt4.value.vi32 = 514;
+
+    skvt5.key = "o_k";
+    skvt5.type = TYPE_INT;
+    skvt5.value.vi32 = 1919;
+
+    skvt6.key = "TL";
+    skvt6.type = TYPE_TRACKLINE;
+
     skvs_t[0] = skvt1;
     skvs_t[1] = skvt2;
+    skvs_t[2] = skvt3;
+    skvs_t[3] = skvt4;
+    skvs_t[4] = skvt5;
+    skvs_t[5] = skvt6;
 
     while (TRUE)
     {
@@ -100,17 +120,77 @@ void test_run(void){
             // tft180_show_gray_image (0, 0, (const uint8 *)mt9v03x_image, MT9V03X_W, MT9V03X_H, 160, 128, 150);
             tft180_displayimage03x((const uint8* )mt9v03x_image, SCREEN_WIDTH, SCREEN_HEIGHT);
             image_boundary_process();
-            switch_trackline();
+            // switch_trackline();
             process_data();
+            
+            // printf("%d, %d, %f, %f\n", encoder_data_l, encoder_data_r, motor_input_l, motor_input_r);
+            skvt3.value.bo = right_s;
+            skvt4.value.vi32 = out_j;
+            skvt5.value.vi32 = out_k;
+            skvs_t[1] = skvt2;
+            skvs_t[2] = skvt3;
+            skvs_t[3] = skvt4;
+            skvs_t[4] = skvt5;
+            skvs_t[5] = skvt6;
+            show_skvs(&skvs_t, SKVS_T_LENGHT);
+
             show_line();
             show_mark();
-
-            show_skvs(&skvs_t, SKVS_T_LENGHT);
             mt9v03x_finish_flag = 0;
         }
     }
 }
+void test_ser_motor_run(void) {
+    struct ShowKeyValue skvs_t1[SKVS_T1_LENGHT];
+    struct ShowKeyValue skvt1, skvt2, skvt3, skvt4;
 
+    skvt1.key = "v";
+    skvt1.type = TYPE_UINT;
+    skvt1.value.vu32 = 1;
+
+    skvt2.key = "sm_in";
+    skvt2.type = TYPE_DOUBLE;
+    skvt2.value.d = 11;
+
+    skvt3.key = "p_i";
+    skvt3.type = TYPE_DOUBLE;
+    skvt3.value.d = 45;
+
+    skvt4.key = "p_o";
+    skvt4.type = TYPE_DOUBLE;
+    skvt4.value.d = 14;
+
+    skvs_t1[0] = skvt1;
+    skvs_t1[1] = skvt2;
+    skvs_t1[2] = skvt3;
+    skvs_t1[3] = skvt4;
+     while (TRUE)
+    {
+        // 此处编写需要循环执行的代码
+        if(mt9v03x_finish_flag) {
+            // tft180_show_gray_image (0, 0, (const uint8 *)mt9v03x_image, MT9V03X_W, MT9V03X_H, 160, 128, 150);
+            tft180_displayimage03x((const uint8* )mt9v03x_image, SCREEN_WIDTH, SCREEN_HEIGHT);
+            image_boundary_process();
+            // switch_trackline();
+            process_data();
+            
+            // printf("%d, %d, %f, %f\n", encoder_data_l, encoder_data_r, motor_input_l, motor_input_r);
+            skvt2.value.d = server_motor_input;
+            skvt3.value.d = sm_pid.err_now;
+            skvt4.value.d = sm_pid.output;
+            skvs_t1[1] = skvt2;
+            skvs_t1[2] = skvt3;
+            skvs_t1[3] = skvt4;
+            show_skvs(&skvs_t1, SKVS_T1_LENGHT);
+
+            show_line();
+            show_mark();
+            mt9v03x_finish_flag = 0;
+        }
+    }
+
+
+}
 int core0_main(void)
 {
     clock_init();                   // 获取时钟频率<务必保留>
@@ -122,7 +202,7 @@ int core0_main(void)
     // 此处编写用户代码 例如外设初始化代码等
     cpu_wait_event_ready();         // 等待所有核心初始化完毕
     if (IS_TEST){
-        test_run();
+        test_ser_motor_run();
     } else {
         common_run();
     }
