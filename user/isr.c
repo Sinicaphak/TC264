@@ -36,15 +36,40 @@
 #include "isr_config.h"
 #include "isr.h"
 int count = 1;
+double target_speed = DEF_SPEED;
+struct PositionalPid sm_pid, lm_pid, rm_pid;
+struct Parameter sm_parameter = {
+    .kp = 7.2e-2,
+    .ki = 0,
+    .kd = 5e-3,
+    .i_max = 0,
+    .out_max = SERVER_DUTY_MIDDLE - SERVER_DUTY_MIN,
+};
+
+struct Parameter lm_parameter = {
+    .kp = 65,
+    .ki = 1.5,
+    .kd = 0,
+    .i_max = 1500,
+    .out_max = MOTOR_MAX,
+};
+
+struct Parameter rm_parameter = {
+    .kp = 60,
+    .ki = 1.2,
+    .kd = 0,
+    .i_max = 1500,
+    .out_max = MOTOR_MAX,
+};
 // 对于TC系列默认是不支持中断嵌套的，希望支持中断嵌套需要在中断内使用 interrupt_global_enable(0); 来开启中断嵌套
 // 简单点说实际上进入中断后TC系列的硬件自动调用了 interrupt_global_disable(); 来拒绝响应任何的中断，因此需要我们自己手动调用 interrupt_global_enable(0); 来开启中断的响应。
 
 // **************************** PIT中断函数 ****************************
 IFX_INTERRUPT(cc60_pit_ch0_isr, 0, CCU6_0_CH0_ISR_PRIORITY)
 {
+
     interrupt_global_enable(0);                     // 开启中断嵌套
     pit_clear_flag(CCU60_CH0);
-
 
 
 }
@@ -60,9 +85,14 @@ IFX_INTERRUPT(cc60_pit_ch1_isr, 0, CCU6_0_CH1_ISR_PRIORITY)
         gpio_toggle_level(P20_8);
         count = 0;
     }
+
     read_encoder();
+    // 电机pid
+    active_p_pid(&lm_pid, target_speed - encoder_data_l, &lm_parameter);
+    active_p_pid(&rm_pid, target_speed - encoder_data_r, &rm_parameter);
+    motor_input_l = lm_pid.output;
+    motor_input_r = rm_pid.output;
     motor_move(motor_input_l, motor_input_r);
-    server_motor_move(server_motor_input);
 }
 
 IFX_INTERRUPT(cc61_pit_ch0_isr, 0, CCU6_1_CH0_ISR_PRIORITY)

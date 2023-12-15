@@ -7,11 +7,11 @@ uint8 leftline_num;//左线点数量
 uint8 rightline_num;//右线点数量
 /* 修改 */
 //原 // int16 SAR_THRE = 17;//差比和阈值
-int16 SAR_THRE = 17;//差比和阈值
+int16 SAR_THRE = 20;//差比和阈值
 /* 修改结束 */
 /* 修改 */
 //原 // uint8 PIX_PER_METER = 20;//每米的像素数
-uint8 PIX_PER_METER = 50;//每米的像素数
+uint8 PIX_PER_METER = 30;//每米的像素数
 /* 修改结束 */
 
 boolean right_flag = false;

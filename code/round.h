@@ -2,30 +2,33 @@
 #ifndef _ROUND_H_
 #define _ROUND_H_
 
-#define ROUND_BREAK_THS 6
 //
-#define LEFT_LINE_BOUNDARY 7
-#define RIGHT_LINE_BOUNDARY MT9V03X_W - 5
+#define LEFT_LINE_BOUNDARY 5
+#define RIGHT_LINE_BOUNDARY MT9V03X_W - LEFT_LINE_BOUNDARY
 //
 #define BUTTON MT9V03X_H - 1
 // 左环岛偏移
-#define READY_IN_ROUND_SHIFT 2 // 预入环偏移
-#define IN_ROUND_SHIFT 5 // 预入环偏移
-#define OUT_ROUND_SHIFT 5 // 出环岛偏移
+#define BEFORE_ROUND_SHIFT 0-10
+#define MID_ROUND_SHIFT 0-15 // 预入环偏移
+#define IN_ROUND_SHIFT 0-5 // 入环偏移
+#define OUT_ROUND_SHIFT 0-40 // 出环岛偏移
 
 enum ROUND_STATE {
     NO_ROUND = 0,
     PRE_IN_ROUND = 1,
-    READY_IN_ROUND = 2,
-    IN_ROUND = 3,
-    ROUNDING = 4,
-    READY_OUT_ROUND = 5,
-    OUT_ROUND = 6
+    BEFORE_ROUND = 2,
+    MID_ROUND = 3,
+    READY_IN_ROUND = 4,
+    IN_ROUND = 5,
+    ROUNDING = 6,
+    READY_OUT_ROUND = 7,
+    OUT_ROUND = 8,
+    ROUND_END = 9
 };
 
 extern enum ROUND_STATE round_state;
 extern boolean right_s;
-extern int out_j, out_k, out_z;
+extern int out_j, out_k, out_rs;
 
 void round_track(    
     void

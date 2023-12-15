@@ -118,3 +118,10 @@ void draw_matrix(void) {
         }
     }
 }
+/**
+ * @brief 将右边线修正为屏幕中间的线
+ * 右边线方程: x = fk * y + b + MT9V03X_W/2
+ */
+int correct_right_border(int x, int y){
+	return x - (y * RIGHTLINE_KF + RIGHTLINE_B);
+}

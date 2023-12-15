@@ -6,6 +6,9 @@
 #define SCREEN_HEIGHT 128
 #define MATRIX_SIZE   10
 
+#define RIGHTLINE_KF 0.60
+#define RIGHTLINE_B 25
+
 
 // 将input限制在 [ -limit , limit ]
 double limit_amplitude_absolute(double input, double limit);
@@ -29,5 +32,7 @@ double smooth(double *history, int length, double input);
 double calculate_speed(int pluse);
 
 void draw_matrix(void);
+
+int correct_right_border(int x, int y);
 // endif
 #endif

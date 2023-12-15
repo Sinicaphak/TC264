@@ -83,6 +83,18 @@ void show_value(struct ShowKeyValue *skv, int x, int y){
                     tft180_show_string(x, y, "OR");
                     break;
                 };
+                case (ROUND_END) : {
+                    tft180_show_string(x, y, "R_E");
+                    break;
+                };
+                case (MID_ROUND) : {
+                    tft180_show_string(x, y, "M_R");
+                    break;
+                };
+                case (BEFORE_ROUND) : {
+                    tft180_show_string(x, y, "B_R");
+                    break;
+                };
                 default : {
                     tft180_show_string(x, y, "WRS");
                     break;
@@ -134,7 +146,7 @@ void show_skvs(struct ShowKeyValue *skvs, int skvs_length){
     int i = 0;
 
     for (i = 0; i < skvs_length; i++){
-        tft180_show_string(COLUMN_LEFT_X, i*CHAR_HEIGHT, skvs[i].key);
+        // tft180_show_string(COLUMN_LEFT_X, i*CHAR_HEIGHT, skvs[i].key);
         show_value(&skvs[i], COLUMN_RIGHT_X, i*CHAR_HEIGHT);
         // show_value(&skvs[i], COLUMN_LEFT_X, i*CHAR_HEIGHT);
     }

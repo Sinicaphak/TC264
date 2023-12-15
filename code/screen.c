@@ -9,8 +9,16 @@ void show_line(void){
         ips200_draw_point((uint16)rightline[i], i, RGB565_BLUE);//蓝色右线
         ips200_draw_point((uint16)centerline[i], i, RGB565_PURPLE);//紫色中线
     }
-    for(uint16 i = 0; i < MT9V03X_H; i = i + 2){
+    for(uint16 i = 0; i < MT9V03X_H - 1; i++){
+        if (trackline[i] - 1 > 1) {
+            ips200_draw_point((uint16)(trackline[i] - 1), i, RGB565_BLACK);//黑色跟踪
+        }
+        
         ips200_draw_point((uint16)trackline[i], i, RGB565_BLACK);//黑色跟踪
+
+        if (trackline[i] + 1 < MT9V03X_W - 1) {
+            ips200_draw_point((uint16)(trackline[i] + 1), i, RGB565_BLACK);//黑色跟踪
+        }
     }
 }
 

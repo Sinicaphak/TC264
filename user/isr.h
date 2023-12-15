@@ -39,7 +39,7 @@
 #include "zf_common_headfile.h"
 
 
-
+extern double target_speed;
 
 
 

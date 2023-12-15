@@ -2,6 +2,7 @@
 #ifndef _TRACK_H_
 #define _TRACK_H_
 #define LINE_SHIFT 20
+#define DEFAULT_SHIFT 50
 // include
 #include "zf_common_headfile.h"
 extern int16 trackline[MT9V03X_H];

@@ -39,7 +39,8 @@ void init_all(void){
     // // 编码器初始化
     encoder_dir_init(ENCODER_LEFT, ENCODER_LEFT_A, ENCODER_LEFT_B);                      // 初始化编码器模块与引脚 方向解码编码器模式
     encoder_dir_init(ENCODER_RIGHT, ENCODER_RIGHT_A, ENCODER_RIGHT_B);                      // 初始化编码器模块与引脚 方向解码编码器模式
-    pit_ms_init(CCU60_CH1, 20);
+    pit_ms_init(CCU60_CH1, 2);
+    pit_ms_init(CCU60_CH0, 2);
 
     sm_pid.err_now = 1;
     sm_pid.output = 2;

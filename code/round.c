@@ -2,7 +2,7 @@
 
 enum ROUND_STATE round_state = NO_ROUND;
 boolean right_s = false;
-int out_j = 0, out_k = 0;
+int out_j = 0, out_k = 0, out_rs = 0;
 /**
  * todo:
  * 现在只能跑左环岛
@@ -14,23 +14,25 @@ int out_j = 0, out_k = 0;
  * @return false 不是直线
  */
 boolean rightline_straight(void) {
-    int i=0, k = 0;
-    for (i = BUTTON; i >= 30; i -= 5) {
-            // 右边线正常
-            if (rightline[i] - rightline[i + 5] < -1.8) {
-                k++;
-            } else if (
-                rightline[i] > RIGHT_LINE_BOUNDARY &&
-                rightline[i + 1] > RIGHT_LINE_BOUNDARY &&
-                rightline[i + 2] > RIGHT_LINE_BOUNDARY &&
-                rightline[i + 3] > RIGHT_LINE_BOUNDARY &&
-                rightline[i + 4] > RIGHT_LINE_BOUNDARY
-            ) {
-                k = 0;
-                break;
-            }
+    int i = 0, k = 0;
+    for (i = BUTTON - 5; i > BUTTON - 60; i -= 3) {
+        if (rightline[i] - rightline[i + 5] < -1) {
+            k++;
+        } else if (
+            // 右边线看不见, 默认为直线
+            rightline[i] > RIGHT_LINE_BOUNDARY &&
+            rightline[i - 1] > RIGHT_LINE_BOUNDARY &&
+            rightline[i - 2] > RIGHT_LINE_BOUNDARY
+        ) {
+            k++;
+        } else if (
+            rightline[i] - rightline[i + 5] >= 2
+        ) {
+            k = 0;
         }
-    return (k > 5) ? true : false;
+        out_rs = k;
+    }
+    return (k >= 15) ? true : false;
 }
 
 /**
@@ -42,89 +44,131 @@ void round_check(
     void
 ){
     int i=0, j=0, k=0;
-
+    out_j = 0, out_k = 0;
     switch (round_state) {
         case NO_ROUND : {
-            for (i = BUTTON - 20; i >= BUTTON - 40 ; i -= 2) {
-                // 左边线中前部在边框附近, 判断为丢线
+            for (i = BUTTON; i >= BUTTON - 40 ; i -= 2) {
+                // 左边线前部在边框附近, 判断为丢线
                 if (leftline[i] < LEFT_LINE_BOUNDARY) {
                     j++;
                 }
             }
-            // right_s = rightline_straight();
-            // out_j = j;
-            // if (out_j >= 3 && right_s) {
-            //     round_state = PRE_IN_ROUND;
-            // }
-            if (j >= 3 && rightline_straight()) {
-                round_state = PRE_IN_ROUND;
+            out_j = j;
+
+            if (out_j >= 15 && rightline_straight()) {
+                round_state = BEFORE_ROUND;
             }
             break;
         };
-        case PRE_IN_ROUND : {
-            j = 0, k = 0;
+        case BEFORE_ROUND : {
             for (i = BUTTON; i > BUTTON - 40; i -= 2) {
-                // 左边线前部在边框附近
-                if (leftline[i] < LEFT_LINE_BOUNDARY) {
+                // 左边线前部为内环, 不在边框附近
+                if (leftline[i] > LEFT_LINE_BOUNDARY) {
                     j++;
                 }
             }
-            for (i = BUTTON - 20; i > BUTTON - 80; i -= 2) {
-                // 左线中部出现内环下半部
-                if (leftline[i] - leftline[i + 2] > 2) {
-                    k++;
-                }
-            }
+            // for (i = BUTTON - 40; i > BUTTON - 80; i -= 2) {
+            //     // 左线中部出现内环下半部
+            //     if (leftline[i] - leftline[i + 2] > 2) {
+            //         k++;
+            //     }
+            // }
 
             right_s = rightline_straight();
             out_j = j;
-            out_k = k;
+            // out_k = k;
 
-            if (out_j > 10 && out_k > 10 && right_s) {
-                round_state = READY_IN_ROUND;
+            if (out_j >= 12 && right_s) {
+                round_state = MID_ROUND;
             }
-            // if (out_j > 4 && right_s ) {
-            //     round_state = READY_IN_ROUND;
-            // }
             break;
         };
-        case READY_IN_ROUND: {
-            k = 0;
-            for ( i = BUTTON; i >= BUTTON - 60; i -= 3) {
-                // 左边线中部和前部在边框附近
+        case MID_ROUND : {
+           for (i = BUTTON - 20; i > BUTTON - 70; i -= 3) {
+                // 左线中前部在边框附近
+                // if (leftline[i] - leftline[i + 3] >= 1) {
+                //     j++;
+                // } else if (leftline[i] - leftline[i + 3] <= -1) {
+                //     j++;
+                // }
                 if (leftline[i] < LEFT_LINE_BOUNDARY) {
-                    k++;
+                    j++;
                 }
             }
-
+            out_j = j;
             right_s = rightline_straight();
-            out_k = k;
 
-            // 中线偏左
-            if ( out_k > 12 && right_s && centerline[70] >= 70) {
+            if (out_j > 12 && right_s) {
                 round_state = IN_ROUND;
             }
             break;
         }
+        // case MID_ROUND : {
+        //     // 左线在边框附近
+        //     for ( i = BUTTON; i >= BUTTON - 40; i -= 2) {
+        //         if (leftline[i] < LEFT_LINE_BOUNDARY) {
+        //             j++;
+        //         }
+        //     }
+        //     right_s = rightline_straight();
+        //     out_j = j;
+        //     if ( out_j > 8 && right_s) {
+        //         round_state = READY_IN_ROUND;
+        //     }
+        //     break;
+        // };
+        // case READY_IN_ROUND: {
+        //     // for ( i = BUTTON - 40; i >= BUTTON - 60; i -= 2) {
+        //     //     // 左边线中部在边框附近
+        //     //     if (leftline[i] < LEFT_LINE_BOUNDARY) {
+        //     //         j++;
+        //     //     }
+        //     // }
+        //     // for ( i = BUTTON - 60; i >= BUTTON - 80; i -= 2) {
+        //     //     // 左边线后部正常
+        //     //     if (
+        //     //         (leftline[i] - leftline[i - 2] < 0) &&
+        //     //         (leftline[i] > LEFT_LINE_BOUNDARY )
+        //     //     ){
+        //     //         k++;
+        //     //     } else {
+        //     //         k--;
+        //     //     }
+        //     // }
+        //     // right_s = rightline_straight();
+        //     // out_j = j;
+        //     // out_k = k;
+        //     // // 中线偏左
+        //     // if ( out_j > 8 && right_s && k > 7) {
+        //     //     round_state = IN_ROUND;
+        //     // }
+        //     // break;
+        //     // 左线在边框附近
+        //     for ( i = BUTTON; i >= BUTTON - 40; i -= 2) {
+        //         if (leftline[i] < LEFT_LINE_BOUNDARY) {
+        //             j++;
+        //         } else {
+        //             j--;
+        //         }
+        //     }
+        //     right_s = rightline_straight();
+        //     out_j = j;
+        //     if ( out_j > 13 && right_s) {
+        //         round_state = IN_ROUND;
+        //     }
+        //     break;
+        // }
         case IN_ROUND: {
-            j = 0, k = 0;
-            for ( i = BUTTON; i >= BUTTON - 60; i -= 3) {
-                // 左边线中部和前部在边框附近
-                if (leftline[i] < LEFT_LINE_BOUNDARY) {
-                    j++;
-                }
-            }
             for ( i = BUTTON; i >= BUTTON - 40; i -= 2) {
                 // 右边线前部为外环
-                if (rightline[i] - rightline[i + 2] > 1.2) {
+                if (rightline[i] - rightline[i + 2] <= -3) {
                     k++;
                 }
             }
 
-            out_j = j;
             out_k = k;
 
-            if (out_j > 12 && out_k >= 10) {
+            if (out_k > 8) {
                 round_state = ROUNDING;
             }
             break;
@@ -133,32 +177,35 @@ void round_check(
              j = 0, k = 0;
              for ( i = BUTTON - 40; i > BUTTON - 80; i -= 2) {
                 // 右边线中部斜率大于零(向右偏/)
-                 if(rightline[i]-rightline[i-3] >= -0.5) {
+                 if (rightline[i]-rightline[i+3] >= 3) {
                     j++;
                  }
             }
-            // 左边线在边框附近
-            for ( i = BUTTON; i >= BUTTON - 30; i -= 3) {
-                // 左边线中部和前部在边框附近
-                if (leftline[i] < LEFT_LINE_BOUNDARY) {
-                    k++;
+            
+            for ( i = BUTTON - 40; i >= BUTTON - 80; i -= 2) {
+                // 右边线中部分突变
+                if (rightline[i] - rightline[i - 2] >= 4 ) {
+                    if (rightline[i + 2] - rightline[i] < 1) {
+                        if (rightline[i - 2] - rightline[i - 4] < 1) {
+                            k++;
+                        }
+                    }
                 }
             }
 
             out_j = j;
             out_k = k;
 
-             if ( out_j >= 3 && out_k >= 5 ){
-                round_state=READY_OUT_ROUND;
+            if ( out_j > 7 || k > 0){
+                round_state = READY_OUT_ROUND;
             }
             break;
         };
         case READY_OUT_ROUND: {
-            j = 0, k = 0;
             // 左边线前部在边框附近
             for ( i = BUTTON; i >= BUTTON - 40; i -= 2) {
                 // 左边线中部和前部在边框附近
-                if (leftline[i] > LEFT_LINE_BOUNDARY) {
+                if (leftline[i] < LEFT_LINE_BOUNDARY) {
                     j++;
                 }
             }
@@ -172,41 +219,55 @@ void round_check(
             out_j = j;
             out_k = k;
 
-            if ( out_j > 5 && out_k > 5) {
+            if ( out_j >= 12 && out_k >= 12) {
                 round_state = OUT_ROUND;
             }
             break;
         };
         case OUT_ROUND: {
-            j=0;
-            // 左边线后部恢复正常
-            for( i = BUTTON - 60; i > BUTTON - 80; i -= 2) {
-                if ( 
-                    ( (leftline[i+2] - leftline[i]) >= 5 ) &&
-                    ( (leftline[i+2] - leftline[i]) >= 1)
-                ) {
-                    j++;//斜率恢复正常
-                }
-            }
+            // // 左边线中后部在边框附近
+            // for( i = BUTTON; i > BUTTON - 60; i -= 2) {
+            //     if ( leftline[i] < 25) {
+            //         j++;
+            //     }
+            // }
             // 右边线前部恢复正常
             for( i = BUTTON ; i > BUTTON - 60; i -= 3) {
                 if (
-                    ( ( rightline[i+3] - rightline[i] ) >= 5 ) &&
-                    ( ( rightline[i+3] - rightline[i] ) >= 3 )
+                    ( ( rightline[i + 3] - rightline[i] ) >= 2 )
                 ) {
-                    k++;//斜率恢复正常
+                    k++;
                 }
             }
 
-            out_j = j;
             out_k = k;
+            right_s = rightline_straight();
 
-            if( out_j >= 7 && out_k >= 7) {
+            if( out_k >= 15 && right_s) {
+                round_state = ROUND_END;
+            }
+            break;
+        };
+        case ROUND_END: {
+            // 左边线中前部恢复正常
+            for( i = BUTTON; i > BUTTON - 80; i -= 2) {
+                if ( 
+                    ( leftline[i] > LEFT_LINE_BOUNDARY ) &&
+                    ( (leftline[i - 2] - leftline[i]) >= 1)
+                ) {
+                    j++; //斜率恢复正常
+                }
+            }
+
+            right_s = rightline_straight();
+            out_j = j;
+
+            if ( out_j > 27 && right_s) {
                 round_state = NO_ROUND;
             }
             break;
         };
-
+        
     }
 }
 
@@ -217,36 +278,58 @@ void round_active(
     void
 ){
     int i = 0;
+    if (round_state != NO_ROUND) {
+        target_speed = ROUND_SPEED;
+    } else {
+        target_speed = DEF_SPEED;
+    }
     switch (round_state) {
         case NO_ROUND : {
-            // 不用改变巡线
+            // 巡中线
+            choose_tracktype(TRACK_MID);
             break;
         };
-        case PRE_IN_ROUND : {
+        case BEFORE_ROUND : {
             // 巡右线
             choose_tracktype(TRACK_RIGHT);
+            for (i = 0; i < MT9V03X_H - 2; i++) {
+                trackline[i] = (int)limit_amplitude_upper_lower(
+                    (double)(trackline[i] + BEFORE_ROUND_SHIFT),
+                    2,
+                    MT9V03X_W - 2
+                );
+            }
             break;
         }
-        case READY_IN_ROUND : {
-            // 巡右线, 在PRE_IN_ROUND中被改过了
-            // choose_tracktype(TRACK_RIGHT);
+        case MID_ROUND : {
+            // 巡右线, 在 BEFORE_ROUND 中被改过了
+            choose_tracktype(TRACK_RIGHT);
+            // 将巡线点向环岛方向偏移
+            for (i = 0; i < MT9V03X_H - 30; i++) {
+                trackline[i] = (int)limit_amplitude_upper_lower(
+                    (double)(trackline[i] + MID_ROUND_SHIFT),
+                    2,
+                    MT9V03X_W - 2
+                );
+            }
             break;
-        };
+        }
         case IN_ROUND : {
+            // 巡中线
+            choose_tracktype(TRACK_MID);
             // 将巡线点向环岛方向偏移
             for (i = 0; i < MT9V03X_H - 2; i++) {
-                trackline[i] = trackline[i + 1] + IN_ROUND_SHIFT;
-                if (trackline[i] > MT9V03X_W - 2) {
-                    trackline[i] = MT9V03X_W - 2;
-                } else if (trackline[i] < 2) {
-                    trackline[i] = 2;
-                }
+                trackline[i] = (int)limit_amplitude_upper_lower(
+                    (double)(trackline[i + 1] + IN_ROUND_SHIFT),
+                    2,
+                    MT9V03X_W - 2
+                );
             }
             break;
         };
         case ROUNDING : {
-            // 巡右线, 在PRE_IN_ROUND中被改过了
-            // choose_tracktype(TRACK_RIGHT);
+            // 巡右线
+            choose_tracktype(TRACK_RIGHT);
             break;
         };
         case READY_OUT_ROUND : {
@@ -257,8 +340,18 @@ void round_active(
         case OUT_ROUND : {
             // 将巡线点向出环岛方向偏移
             for (i = 0; i < MT9V03X_H - 2; i++) {
-                trackline[i] = trackline[i + 1] - IN_ROUND_SHIFT;
+                trackline[i] = trackline[i + 1] + OUT_ROUND_SHIFT;
+                if (trackline[i] > MT9V03X_W - 2) {
+                    trackline[i] = MT9V03X_W - 2;
+                } else if (trackline[i] < 2) {
+                    trackline[i] = 2;
+                }
             }
+            break;
+        };
+        case ROUND_END : {
+            // 巡右线
+            choose_tracktype(TRACK_RIGHT);
             break;
         };
     }
@@ -268,5 +361,5 @@ void round_track(
     void
 ){
     round_check();
-    // round_active();
+    round_active();
 }
