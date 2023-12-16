@@ -132,6 +132,27 @@ void show_value(struct ShowKeyValue *skv, int x, int y){
             }
             break;
         }
+        case (TYPE_DIR) : {
+            switch (round_dir) {
+                case NO_DIR : {
+                    tft180_show_string(x, y, "N_D");
+                    break;
+                };
+                case LEFT_DIR : {
+                    tft180_show_string(x, y, "L_D");
+                    break;
+                };
+                case RIGHT_DIR : {
+                    tft180_show_string(x, y, "R_D");
+                    break;
+                };
+                default:
+                    tft180_show_string(x, y, "W_D");
+                    break;
+                }
+            break;
+        }
+        
         default : {
             tft180_show_string(x, y, "W_N");
             break;

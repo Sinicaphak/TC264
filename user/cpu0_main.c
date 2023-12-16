@@ -42,7 +42,7 @@
 
 // **************************** ´úÂëÇøÓò ****************************
 #define SKVS_LENGHT 1
-#define SKVS_T_LENGHT 7
+#define SKVS_T_LENGHT 8
 #define SKVS_T1_LENGHT 4
 #define IS_TEST 1
 
@@ -86,34 +86,33 @@ void test_run(void){
 
     skvt1.key = "v_t";
     skvt1.type = TYPE_UINT;
-    skvt1.value.vu32 = 74;
+    skvt1.value.vu32 = 80;
 
     skvt2.key = "rs";
     skvt2.type = TYPE_ROUND_STATE;
 
-    skvt3.key = "ri_s";
-    skvt3.type = TYPE_BOOLEAN;
-    skvt3.value.bo = true;
+    skvt3.key = "hrl";
+    skvt3.type = TYPE_INT;
+    skvt3.value.vi32 = 11;
 
-    skvt4.key = "o_j";
+    skvt4.key = "hrr";
     skvt4.type = TYPE_INT;
-    skvt4.value.vi32 = 514;
+    skvt4.value.vi32 = 45;
 
-    skvt5.key = "o_k";
+    skvt5.key = "o_j";
     skvt5.type = TYPE_INT;
-    skvt5.value.vi32 = 1919;
+    skvt5.value.vi32 = 514;
 
-    skvt6.key = "p_o";
-    skvt6.type = TYPE_DOUBLE;
-    skvt6.value.d = 14;
+    skvt6.key = "o_k";
+    skvt6.type = TYPE_INT;
+    skvt6.value.vi32 = 1919;
 
     skvt7.key = "rl_s";
     skvt7.type = TYPE_INT;
     skvt7.value.vi32 = 0;
 
-    skvt8.key = "dif";
-    skvt8.type = TYPE_INT;
-    skvt8.value.vi32 = 789;
+    skvt8.key = "lr";
+    skvt8.type = TYPE_DIR;
 
     skvs_t[0] = skvt1;
     skvs_t[1] = skvt2;
@@ -135,19 +134,17 @@ void test_run(void){
             process_data();
             
             printf("%d, %d, %f, %f\n", encoder_data_l, encoder_data_r, motor_input_l, motor_input_r);
-            skvt3.value.bo = right_s;
-            skvt4.value.vi32 = out_j;
-            skvt5.value.vi32 = out_k;
-            skvt6.value.d = sm_pid.output;
+            skvt3.value.vi32 = out_hrl;
+            skvt4.value.vi32 = out_hrr;
+            skvt5.value.vi32 = out_j;
+            skvt6.value.vi32 = out_k;
             skvt7.value.vi32 = out_rs;
-            skvt8.value.vi32 = rightline[80] - rightline[85];
             skvs_t[1] = skvt2;
             skvs_t[2] = skvt3;
             skvs_t[3] = skvt4;
             skvs_t[4] = skvt5;
             skvs_t[5] = skvt6;
             skvs_t[6] = skvt7;
-            skvs_t[7] = skvt8;
             show_skvs(&skvs_t, SKVS_T_LENGHT);
 
             show_line();

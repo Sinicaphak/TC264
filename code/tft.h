@@ -23,7 +23,8 @@ enum ShowValueType {
     TYPE_ELEMENT,
     TYPE_ROUND_STATE,
     TYPE_BOOLEAN,
-    TYPE_TRACKLINE
+    TYPE_TRACKLINE,
+    TYPE_DIR
 };
 // ShowKeyValue中可能出现的值
 union ShowValue {

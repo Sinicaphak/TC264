@@ -11,8 +11,17 @@ void switch_trackline(void){
         }
     }
     if(track_type == TRACK_LEFT){
+        // for(int i = 0; i < MT9V03X_H;i ++){
+        //     trackline[i] = (leftline[i] + (0.2 * PIX_PER_METER)) > 187 ? 187 : (int16)(leftline[i] + 0.2 * PIX_PER_METER);//循左线，左线应向右侧偏移道路宽度一半，即0.2米对应的像素数
+        // }
         for(int i = 0; i < MT9V03X_H;i ++){
-            trackline[i] = (leftline[i] + (0.2 * PIX_PER_METER)) > 187 ? 187 : (int16)(leftline[i] + 0.2 * PIX_PER_METER);//循左线，左线应向右侧偏移道路宽度一半，即0.2米对应的像素数
+            temp = correct_left_border(leftline[i], i);
+            trackline[i] = 
+                (temp > 2 && temp < MT9V03X_W ) ? 
+                (temp) :
+                (
+                    ((leftline[i]) - DEFAULT_SHIFT) < 2 ? 0 : (int16)(leftline[i] - DEFAULT_SHIFT)
+                );
         }
     }
     if(track_type == TRACK_RIGHT){

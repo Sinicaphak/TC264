@@ -10,6 +10,10 @@
 #define RIGHTLINE_B 25
 
 
+#define LEFTLINE_KF 0.60
+#define LEFTLINE_B 15
+
+
 // 将input限制在 [ -limit , limit ]
 double limit_amplitude_absolute(double input, double limit);
 // 将input限制在 [ lower_limit , upper_limit ]

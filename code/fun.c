@@ -125,3 +125,10 @@ void draw_matrix(void) {
 int correct_right_border(int x, int y){
 	return x - (y * RIGHTLINE_KF + RIGHTLINE_B);
 }
+/**
+ * @brief 将左边线修正为屏幕中间的线
+ * 左边线方程: x = fk * y + b
+ */
+int correct_left_border(int x, int y){
+	return x + (y * LEFTLINE_KF + LEFTLINE_B);
+}

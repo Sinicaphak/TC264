@@ -47,10 +47,10 @@ struct Parameter sm_parameter = {
 };
 
 struct Parameter lm_parameter = {
-    .kp = 65,
-    .ki = 1.5,
+    .kp = 100,
+    .ki = 2,
     .kd = 0,
-    .i_max = 1500,
+    .i_max = 2500,
     .out_max = MOTOR_MAX,
 };
 

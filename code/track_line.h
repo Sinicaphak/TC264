@@ -5,8 +5,8 @@
 #define ERROR_SHIFT 10
 #define ERROR_SHIFT_GAIN 1
 
-#define DEF_SPEED 25
-#define ROUND_SPEED 15
+#define DEF_SPEED 27
+#define ROUND_SPEED 18
 
 extern double target_speed;
 extern struct PositionalPid sm_pid;
