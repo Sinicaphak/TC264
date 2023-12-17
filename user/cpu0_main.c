@@ -86,7 +86,7 @@ void test_run(void){
 
     skvt1.key = "v_t";
     skvt1.type = TYPE_UINT;
-    skvt1.value.vu32 = 80;
+    skvt1.value.vu32 = 82;
 
     skvt2.key = "rs";
     skvt2.type = TYPE_ROUND_STATE;
@@ -129,7 +129,8 @@ void test_run(void){
         if(mt9v03x_finish_flag) {
             // tft180_show_gray_image (0, 0, (const uint8 *)mt9v03x_image, MT9V03X_W, MT9V03X_H, 160, 128, 150);
             tft180_displayimage03x((const uint8* )mt9v03x_image, SCREEN_WIDTH, SCREEN_HEIGHT);
-            image_boundary_process();
+            // image_boundary_process();
+            image_process();
             switch_trackline();
             process_data();
             
@@ -149,6 +150,7 @@ void test_run(void){
 
             show_line();
             show_mark();
+            print_sidelines();
             mt9v03x_finish_flag = 0;
         }
     }

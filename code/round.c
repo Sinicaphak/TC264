@@ -128,24 +128,24 @@ void left_round_check(
                     j++;
                 }
             }
-            // for (i = BUTTON - 60; i >= BUTTON - 100; i -= 2) {
-            //     // 左线前部出现内环中部, 斜率先变大后变小 
-            //     if (
-            //         (leftline[i] - leftline[i + 4] >= 2) &&
-            //         (leftline[i] - leftline[i - 4] >= 2)    
-            //     ) {
-            //         k++;
-            //     }
-            // }
+            for (i = BUTTON - 60; i >= BUTTON - 100; i -= 2) {
+                // 左线前部出现内环中部, 斜率先变大后变小 
+                if (
+                    (leftline[i] - leftline[i + 4] >= 2) &&
+                    (leftline[i] - leftline[i - 4] >= 2)    
+                ) {
+                    k++;
+                }
+            }
             out_j = j;
             out_k = k;
             right_s = rightline_straight(false);
-            // if (out_j >= 17 && right_s && out_k >= 1) {
-            //     round_state = BEFORE_ROUND;
-            // }
-            if (out_j >= 17 && right_s) {
+            if (out_j >= 12 && right_s && out_k >= 1) {
                 round_state = BEFORE_ROUND;
             }
+            // if (out_j >= 17 && right_s) {
+            //     round_state = BEFORE_ROUND;
+            // }
             break;
         };
         case BEFORE_ROUND : {

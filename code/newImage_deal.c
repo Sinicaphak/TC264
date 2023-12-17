@@ -8,10 +8,8 @@ float clip_value = 2;
 float pixel_per_meter = 102;
 float sample_dist = 0.02;
 ///////////////// 修改 //////////////////////
-// float begin_x = 14;
-// int begin_y = 80;
-float begin_x = 4;
-int begin_y = 114;
+float begin_x = 14;
+int begin_y = 80;
 ///////////////// 修改结束 //////////////////////
 float line_blur_kernel = 7;
 float angle_dist = 0.20;
@@ -88,7 +86,7 @@ image_t img_raw = DEF_IMAGE(mt9v03x_image, MT9V03X_H, MT9V03X_W);
 //float garage_begin_y = 35;
 ///////////////// 修改 //////////////////////
 // uint8 init_thres = 140;
-uint8 init_thres = 50;
+uint8 init_thres = 140;
 ///////////////// 修改结束 //////////////////////
 
 int no_found0 = 0;
@@ -181,13 +179,13 @@ void image_process(void){
     // nms_angle(rpts1a, rpts1a_num, rpts1an, (int) round(angle_dist / sample_dist) * 2 + 1);
     // rpts1an_num = rpts1a_num;
 
-    // track_leftline(rpts0s, rpts0s_num, rptsc0, (int) round(angle_dist / sample_dist), pixel_per_meter * ROAD_WIDTH / 2);
-    // rptsc0_num = rpts0s_num;
-    // track_rightline(rpts1s, rpts1s_num, rptsc1, (int) round(angle_dist / sample_dist), pixel_per_meter * ROAD_WIDTH / 2);
-    // rptsc1_num = rpts1s_num;
+    track_leftline(rpts0s, rpts0s_num, rptsc0, (int) round(angle_dist / sample_dist), pixel_per_meter * ROAD_WIDTH / 2);
+    rptsc0_num = rpts0s_num;
+    track_rightline(rpts1s, rpts1s_num, rptsc1, (int) round(angle_dist / sample_dist), pixel_per_meter * ROAD_WIDTH / 2);
+    rptsc1_num = rpts1s_num;
 
-    // track_midline(rpts0s, rpts0s_num, rpts1s, rpts1s_num, rptscm);
-    // rptscm_num = MIN(rpts0s_num, rpts1s_num);
+    track_midline(rpts0s, rpts0s_num, rpts1s, rpts1s_num, rptscm);
+    rptscm_num = MIN(rpts0s_num, rpts1s_num);
 
     // straight0_num = check_straight(rpts0s, rpts0s_num);
     // straight1_num = check_straight(rpts1s, rpts1s_num);
