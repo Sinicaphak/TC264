@@ -10,8 +10,6 @@
 // }
 
 
-// #define TEST_WIRELESS_PIC
-
 void init_motor(void){
     if (IS_FULL_BRIDGE){
         // 初始化全桥电机

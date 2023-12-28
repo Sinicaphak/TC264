@@ -192,8 +192,8 @@ void test_ser_motor_run(void) {
             
             // printf("%d, %d, %f, %f\n", encoder_data_l, encoder_data_r, motor_input_l, motor_input_r);
             skvt2.value.d = server_motor_input;
-            skvt3.value.d = sm_pid.err_now;
-            skvt4.value.d = sm_pid.output;
+//            skvt3.value.d = sm_pid.err_now;
+//            skvt4.value.d = sm_pid.output;
             skvs_t1[1] = skvt2;
             skvs_t1[2] = skvt3;
             skvs_t1[3] = skvt4;
