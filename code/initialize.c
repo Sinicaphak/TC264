@@ -9,6 +9,9 @@
 //     }
 // }
 
+
+// #define TEST_WIRELESS_PIC
+
 void init_motor(void){
     if (IS_FULL_BRIDGE){
         // 初始化全桥电机
@@ -44,5 +47,12 @@ void init_all(void){
 
     sm_pid.err_now = 1;
     sm_pid.output = 2;
+    ImagePerspective_Init();
     // init_sideline();
+}
+
+void test_wireless_pic_init(void) {
+    gpio_init(P20_8, GPO, GPIO_HIGH, GPO_PUSH_PULL);
+    mt9v03x_init();
+    wireless_uart_init();
 }

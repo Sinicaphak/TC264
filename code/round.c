@@ -102,11 +102,11 @@ void has_round(void) {
     }
     out_hrl = l;
     out_hrr = r;
-    if (l >= 2 && r >= 2) {
-        round_dir = NO_DIR;
-    } else if (l >= 2 && r < 2) {
+    if (l >= 3 && r >= 3) {
+        round_dir = LOSS_DIR;
+    } else if (l >= 3 && r < 3) {
         round_dir = LEFT_DIR;
-    } else if (r >= 2 && l < 2) {
+    } else if (r >= 3 && l < 3) {
         round_dir = RIGHT_DIR;
     } else {
         round_dir = NO_DIR;
@@ -149,16 +149,17 @@ void left_round_check(
             break;
         };
         case BEFORE_ROUND : {
-            for (i = BUTTON; i > BUTTON - 40; i -= 2) {
+            for (i = BUTTON; i > BUTTON - 20; i -= 2) {
                 // 左边线前部为内环, 不在边框附近
-                if (leftline[i] > LEFT_LINE_BOUNDARY) {
+                if (leftline[i] - leftline[i - 2] <= -1) {
                     j++;
                 }
             }
             right_s = rightline_straight(true);
             out_j = j;
+            out_k = k;
 
-            if (out_j >= 12 && right_s) {
+            if (out_j >= 9 && right_s) {
                 round_state = MID_ROUND;
             }
             break;
@@ -173,7 +174,7 @@ void left_round_check(
             out_j = j;
             right_s = rightline_straight(true);
 
-            if (out_j > 12 && right_s) {
+            if (out_j >= 12 && right_s) {
                 round_state = IN_ROUND;
             }
             break;
@@ -465,8 +466,10 @@ void left_round_active(
     int i = 0;
     if (round_state != NO_ROUND) {
         target_speed = ROUND_SPEED;
+        element_type = ROUND;
     } else {
         target_speed = DEF_SPEED;
+        element_type = NO_ELEMENT;
     }
     switch (round_state) {
         case NO_ROUND : {
@@ -548,8 +551,10 @@ void right_round_active(
     int i = 0;
     if (round_state != NO_ROUND) {
         target_speed = ROUND_SPEED;
+        element_type = ROUND;
     } else {
         target_speed = DEF_SPEED;
+        element_type = NO_ELEMENT;
     }
 
     switch (round_state) {
@@ -631,6 +636,9 @@ void round_track(
 ){  
     has_round();
     switch (round_dir) {
+        case NO_DIR : {
+            break;
+        };
         case LEFT_DIR : {
             left_round_check();
             left_round_active();
@@ -641,11 +649,11 @@ void round_track(
             right_round_active();
             break;
         };
-        case NO_DIR : {
+        case LOSS_DIR : {
             break;
         };
         default : {
-            zf_log(0, "round_dir error");
+            self_log("round_dir error");
             break;
         }
     }

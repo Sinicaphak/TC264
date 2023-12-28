@@ -1,4 +1,5 @@
 #include "zf_common_headfile.h"
+
 //zf_device_tft180 tft180_display_font中默认字体为8X16
 void show_value(struct ShowKeyValue *skv, int x, int y){
     switch (skv->type) {
@@ -14,40 +15,25 @@ void show_value(struct ShowKeyValue *skv, int x, int y){
             tft180_show_uint(x, y, skv->value.vu32, NUM_LENGTH);
             break;
         };
-        case (TYPE_ELEMENT) : {
-            if (skv->value.vi32 < 0){
-                tft180_show_string(x, y, "LL ");
-                skv->value.vi32 = -1 * skv->value.vi32;
-            } else {
-                tft180_show_string(x, y, "R ");
-            }
-            x += 2 * CHAR_WIDTH;
-            switch (skv->value.vi32) {
-                case (0) : {
+        case (TYPE_ELEMENT_STATE) : {
+            struct ShowKeyValue skv_inner;
+            skv_inner.key = skv->key;  
+            switch (element_type) {
+                case (NO_ELEMENT) : {
                     tft180_show_string(x, y, "NULL");
                     break;
                 };
-                case (1) : {
-                    tft180_show_string(x, y, "STRAIGHT");
+                case (CROSS) : {
+                    skv_inner.type = TYPE_CROSS_STATE;
+                    show_value(&skv_inner, x, y);
                     break;
                 };
-                case (2) : {
-                    tft180_show_string(x, y, "CURVE");
+                case (ROUND) : {
+                    skv_inner.type = TYPE_ROUND_STATE;
+                    show_value(&skv_inner, x, y);
                     break;
                 };
-                case (3) : {
-                    tft180_show_string(x, y, "ROUNDABOUT");
-                    break;
-                };
-                case (4) : {
-                    tft180_show_string(x, y, "CROSS");
-                    break;
-                };
-
-                default : {
-                    tft180_show_string(x, y, "NULL");
-                    x += 2 * CHAR_WIDTH;
-                    tft180_show_int(x, y, skv->value.vi32, NUM_LENGTH);
+                default: {
                     break;
                 }
             }
@@ -101,6 +87,26 @@ void show_value(struct ShowKeyValue *skv, int x, int y){
                 }
             }
             break;
+        }
+        case (TYPE_CROSS_STATE) : {
+            switch (cross_state) {
+                case (NO_CROSS) : {
+                    tft180_show_string(x, y, "N_C");
+                    break;
+                };
+                case (SPOT_CROSS) : {
+                    tft180_show_string(x, y, "S_C");
+                    break;
+                };
+                case (IN_CROSS) : {
+                    tft180_show_string(x, y, "I_C");
+                    break;
+                };
+                default : {
+                    tft180_show_string(x, y, "W_CS");
+                    break;
+                }
+            }
         }
         case (TYPE_BOOLEAN) : {
             if (skv->value.bo){

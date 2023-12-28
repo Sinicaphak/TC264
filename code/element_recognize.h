@@ -5,10 +5,18 @@
 #define ROUND_THS_TIME 0
 #define ROUND_THS_SINGLE 5
 
+enum ElementType {
+    ROUND = 1,
+    CROSS = 2,
+    NO_ELEMENT = 0
+};
+
 struct Point {
     int x;
     int y;
 };
+
+extern enum ElementType element_type;
 
 /**
  * Ê¶±ðÔªËØ. 

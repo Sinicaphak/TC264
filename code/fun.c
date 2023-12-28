@@ -132,3 +132,49 @@ int correct_right_border(int x, int y){
 int correct_left_border(int x, int y){
 	return x + (y * LEFTLINE_KF + LEFTLINE_B);
 }
+/**
+ * @brief 补线: 从屏幕上面向屏幕下面补
+ * @param begin_y: 开始补线的y坐标
+ * @param end_y: 结束补线的y坐标
+ * @param begin_x: 开始补线的x坐标
+ * @param end_x: 结束补线的x坐标
+ * @param line_need_fix: 需要补线的边线
+ * @param is_left: 左边线补线为1, 右边线补线为0
+ */
+void fix_line(int begin_y, int end_y, int end_x, int begin_x, int line_need_fix[MT9V03X_H], bool is_left) {
+    int i = 0;
+    double kf = 0; 	// 反斜率
+    if (begin_y > end_y) {
+        i = end_y;
+        end_y = begin_y;
+        begin_y = i;
+    }
+    // kf = ((double)(line_need_fix[end_y] - line_need_fix[begin_y]) / (double)(end_y - begin_y));
+    kf = ((double)(end_x - begin_x) / (double)(end_y - begin_y));
+
+    for (i = begin_y + 1; i < end_y; i++) {
+        // line_need_fix[i] = clap(line_need_fix[begin_y] + (i - begin_y) * kf, MT9V03X_W - 1, 1);
+        line_need_fix[i] = clap(begin_x + (i - begin_y) * kf, MT9V03X_W - 1, 1);
+    }
+}
+
+void self_log(const char *str){
+	tft180_clear();
+	zf_log(0, str);
+}
+
+int clap(int input, int up, int down) {
+	if (up < down) {
+		int temp = up;
+		up = down;
+		down = temp;
+	}
+
+	if (input > up) {
+		return up;
+	}
+	if (input < down) {
+		return down;
+	}
+	return input;
+}

@@ -42,9 +42,11 @@
 
 // **************************** 代码区域 ****************************
 #define SKVS_LENGHT 1
-#define SKVS_T_LENGHT 8
+#define SKVS_T_LENGHT 6
 #define SKVS_T1_LENGHT 4
 #define IS_TEST 1
+
+uint8 send_buff = 0;
 
 void common_run(void){
     // 要打印的数值
@@ -82,75 +84,74 @@ void common_run(void){
 }
 void test_run(void){
     struct ShowKeyValue skvs_t[SKVS_T_LENGHT];
-    struct ShowKeyValue skvt1, skvt2, skvt3, skvt4, skvt5, skvt6, skvt7, skvt8;
+    struct ShowKeyValue skvt1, skvt2, skvt3, skvt4, skvt5, skvt6, skvt7, skvt8, skvt9;
 
     skvt1.key = "v_t";
     skvt1.type = TYPE_UINT;
-    skvt1.value.vu32 = 82;
+    skvt1.value.vu32 = 6;
+    skvs_t[0] = skvt1;
+    
+    skvt2.key = "es";
+    skvt2.type = TYPE_ELEMENT_STATE;
+    skvs_t[1] = skvt2;
 
-    skvt2.key = "rs";
-    skvt2.type = TYPE_ROUND_STATE;
-
-    skvt3.key = "hrl";
+    skvt3.key = "coj";
     skvt3.type = TYPE_INT;
     skvt3.value.vi32 = 11;
 
-    skvt4.key = "hrr";
+    skvt4.key = "cok";
     skvt4.type = TYPE_INT;
     skvt4.value.vi32 = 45;
 
-    skvt5.key = "o_j";
+    skvt5.key = "col";
     skvt5.type = TYPE_INT;
     skvt5.value.vi32 = 514;
 
-    skvt6.key = "o_k";
+    skvt6.key = "com";
     skvt6.type = TYPE_INT;
     skvt6.value.vi32 = 1919;
 
-    skvt7.key = "rl_s";
-    skvt7.type = TYPE_INT;
-    skvt7.value.vi32 = 0;
-
-    skvt8.key = "lr";
-    skvt8.type = TYPE_DIR;
-
-    skvs_t[0] = skvt1;
-    skvs_t[1] = skvt2;
     skvs_t[2] = skvt3;
     skvs_t[3] = skvt4;
     skvs_t[4] = skvt5;
     skvs_t[5] = skvt6;
-    skvs_t[6] = skvt7;
-    skvs_t[7] = skvt8;
-
+ 
     while (TRUE)
     {
         // 此处编写需要循环执行的代码
         if(mt9v03x_finish_flag) {
             // tft180_show_gray_image (0, 0, (const uint8 *)mt9v03x_image, MT9V03X_W, MT9V03X_H, 160, 128, 150);
             tft180_displayimage03x((const uint8* )mt9v03x_image, SCREEN_WIDTH, SCREEN_HEIGHT);
-            // image_boundary_process();
-            image_process();
+            image_boundary_process();
+            // image_process();
             switch_trackline();
             process_data();
             
-            printf("%d, %d, %f, %f\n", encoder_data_l, encoder_data_r, motor_input_l, motor_input_r);
-            skvt3.value.vi32 = out_hrl;
-            skvt4.value.vi32 = out_hrr;
-            skvt5.value.vi32 = out_j;
-            skvt6.value.vi32 = out_k;
-            skvt7.value.vi32 = out_rs;
-            skvs_t[1] = skvt2;
+            skvt3.value.vi32 = cross_out_j;
+            skvt4.value.vi32 = cross_out_k;
+            skvt5.value.vi32 = cross_out_l;
+            skvt6.value.vi32 = cross_out_m;
+
             skvs_t[2] = skvt3;
             skvs_t[3] = skvt4;
             skvs_t[4] = skvt5;
             skvs_t[5] = skvt6;
-            skvs_t[6] = skvt7;
+            // printf("%d, %d, %f, %f\n", encoder_data_l, encoder_data_r, motor_input_l, motor_input_r);
+            // skvt3.value.vi32 = out_hrl;
+            // skvt4.value.vi32 = out_hrr;
+            // skvt5.value.vi32 = out_j;
+            // skvt6.value.vi32 = out_k;
+            // skvt7.value.vi32 = out_rs;
+            // skvs_t[2] = skvt3;
+            // skvs_t[3] = skvt4;
+            // skvs_t[4] = skvt5;
+            // skvs_t[5] = skvt6;
+            // skvs_t[6] = skvt7;
             show_skvs(&skvs_t, SKVS_T_LENGHT);
 
             show_line();
             show_mark();
-            print_sidelines();
+            // print_sidelines();
             mt9v03x_finish_flag = 0;
         }
     }
@@ -206,22 +207,41 @@ void test_ser_motor_run(void) {
 
 
 }
+void test_wireless_pic(void) {
+    while (TRUE)
+    {
+        // sendimg(mt9v03x_image, MT9V03X_W, MT9V03X_H);
+        send_buff++;
+        wireless_uart_send_buffer(&send_buff, 1);
+        system_delay_ms(1000);
+    }
+}
+
 int core0_main(void)
 {
     clock_init();                   // 获取时钟频率<务必保留>
     debug_init();                   // 初始化默认调试串口
     // 此处编写用户代码 例如外设初始化代码等
-    
-    init_all();
+    #ifdef TEST_AND_COMMON_RUN
+        init_all();
+    #elif defined TEST_WIRELESS_PIC
+        test_wireless_pic_init();
+    #endif
+
+    // test_wireless_pic_init();
 
     // 此处编写用户代码 例如外设初始化代码等
     cpu_wait_event_ready();         // 等待所有核心初始化完毕
-    if (IS_TEST){
-        test_run();
-    } else {
-        common_run();
-    }
-
+    #ifdef TEST_AND_COMMON_RUN
+        if (IS_TEST){
+            test_run();
+        } else {
+            common_run();
+        }
+    #elif defined TEST_WIRELESS_PIC
+        test_wireless_pic();
+    #endif
+    
     return 0;
 }
 

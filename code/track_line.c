@@ -22,8 +22,8 @@ double get_line_error(void){
 
 void process_data(void){
     double server_input;
-    // choose_tracktype(TRACK_MID);
-    round_track();
+//    round_track();
+    cross_track();
 
     server_input = get_line_error();
     active_p_pid(&sm_pid, server_input, &sm_parameter);

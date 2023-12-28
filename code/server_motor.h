@@ -1,6 +1,6 @@
 //ifdef
 #ifndef _SERVER_MOTOR_H_
-#define _SERVER_MOTOR_H_
+#define _SERVER_MOTOR_H_ 
 //todo 下面这段靠谱吗?
 // ------------------ 舵机占空比计算方式 ------------------
 //
@@ -15,13 +15,10 @@
 // ------------------ 舵机占空比计算方式 ------------------
 
 // 舵机左值 SERVER_DUTY_MAX 右值 SERVER_DUTY_MIN 中值 SERVER_DUTY_MIDDLE
-// #define SERVER_DUTY_MAX (950)
-// #define SERVER_DUTY_MIDDLE (857)
-// #define SERVER_DUTY_MIN (770)
 
-#define SERVER_DUTY_MAX (860)
-#define SERVER_DUTY_MIDDLE (780)
-#define SERVER_DUTY_MIN (710)
+#define SERVER_DUTY_MAX (850)
+#define SERVER_DUTY_MIDDLE (790)
+#define SERVER_DUTY_MIN (730)
 
 extern double server_motor_input;
 

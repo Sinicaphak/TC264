@@ -86,13 +86,18 @@ IFX_INTERRUPT(cc60_pit_ch1_isr, 0, CCU6_0_CH1_ISR_PRIORITY)
         count = 0;
     }
 
-    read_encoder();
-    // 电机pid
-    active_p_pid(&lm_pid, target_speed - encoder_data_l, &lm_parameter);
-    active_p_pid(&rm_pid, target_speed - encoder_data_r, &rm_parameter);
-    motor_input_l = lm_pid.output;
-    motor_input_r = rm_pid.output;
-    motor_move(motor_input_l, motor_input_r);
+    #ifdef TEST_AND_COMMON_RUN
+        read_encoder();
+        // 电机pid
+        active_p_pid(&lm_pid, target_speed - encoder_data_l, &lm_parameter);
+        active_p_pid(&rm_pid, target_speed - encoder_data_r, &rm_parameter);
+        motor_input_l = lm_pid.output;
+        motor_input_r = rm_pid.output;
+        motor_move(motor_input_l, motor_input_r);
+    #elif defined TEST_WIRELESS_PIC
+
+    #endif
+
 }
 
 IFX_INTERRUPT(cc61_pit_ch0_isr, 0, CCU6_1_CH0_ISR_PRIORITY)

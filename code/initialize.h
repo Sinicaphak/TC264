@@ -42,6 +42,7 @@
 #define ENCODER_LEFT_B                 (TIM4_ENCODER_CH2_P00_9)
 
 void init_all(void);
+void test_wireless_pic_init(void);
 // void init_sideline(void);
 
 // endif

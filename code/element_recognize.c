@@ -1,5 +1,5 @@
 #include "zf_common_headfile.h"
-
+enum ElementType element_type = NO_ELEMENT;
 
 void print_x(int x, int y, rgb565_color_enum color) {
     for (int i = -2; i < 3; i++) {

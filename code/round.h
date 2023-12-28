@@ -8,8 +8,8 @@
 //
 #define BUTTON MT9V03X_H - 1
 // ¡Á¨®?¡¤??????
-#define L_BEFORE_ROUND_SHIFT 0-10
-#define L_MID_ROUND_SHIFT 0-15
+#define L_BEFORE_ROUND_SHIFT 0
+#define L_MID_ROUND_SHIFT 5
 #define L_IN_ROUND_SHIFT 0-5 // ???¡¤????
 #define L_OUT_ROUND_SHIFT 0-40 // ???¡¤??????
 // ???¡¤??????
@@ -21,7 +21,8 @@
 enum ROUND_DIR {
     NO_DIR = 0,
     LEFT_DIR = 1,
-    RIGHT_DIR = 2
+    RIGHT_DIR = 2,
+    LOSS_DIR = 3
 };
 
 enum ROUND_STATE {
